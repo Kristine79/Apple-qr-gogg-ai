@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Car, QrCode, Download, Send, Phone, User, Mail, MessageSquare, AlertTriangle, ShieldAlert, Info, ChevronDown, ChevronUp, Check, Loader2, HelpCircle, Palette, Image as ImageIcon, Type, Sun, Moon } from 'lucide-react';
+import { Car, QrCode, Download, Send, Phone, User, Mail, MessageSquare, AlertTriangle, ShieldAlert, Info, ChevronDown, ChevronUp, Check, Loader2, HelpCircle, Palette, Image as ImageIcon, Type, Plus, Trash2, BarChart3, DownloadCloud } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import Link from 'next/link';
 import { encodeCardData, type CarCardData } from '@/lib/utils';
 import { QRCodeSVG } from 'qrcode.react';
 
@@ -14,9 +15,9 @@ const BUTTON_OPTIONS = [
 ];
 
 const STORAGE_KEY = 'carqr_draft';
+const SAVED_CARDS_KEY = 'carqr_saved_cards';
 
 export default function Home() {
-  const [isDarkMode, setIsDarkMode] = useState(true);
   const [formData, setFormData] = useState<CarCardData>({
     carModel: '',
     plateNumber: '',
@@ -28,8 +29,8 @@ export default function Home() {
     showContact: true,
     quickButtons: ['evacuation', 'damage', 'message'],
     themeColor: '#991b1b',
-    backgroundColor: '#ffffff',
-    textColor: '#111827',
+    backgroundColor: '#000000',
+    textColor: '#ffffff',
     qrText: '',
   });
 
@@ -39,13 +40,17 @@ export default function Home() {
   const [generatedUrl, setGeneratedUrl] = useState<string | null>(null);
   const [showQR, setShowQR] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [stats, setStats] = useState<{ totalScans: number; cardScans: Record<string, number> } | null>(null);
+  const [showStats, setShowStats] = useState(false);
+  const [savedCards, setSavedCards] = useState<CarCardData[]>([]);
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     instruction: false,
     car: true,
     owner: true,
     socials: false,
     buttons: false,
-    design: false
+    design: false,
   });
 
   const phoneInputRef = React.useRef<HTMLInputElement>(null);
@@ -57,16 +62,11 @@ export default function Home() {
     setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
   };
 
-  // Load draft and theme
+  // Load draft, statistics and theme
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     
-    const savedTheme = localStorage.getItem('carqr_theme');
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark');
-    }
-
     const draft = localStorage.getItem(STORAGE_KEY);
     if (draft) {
       try {
@@ -76,6 +76,33 @@ export default function Home() {
         console.error('Failed to parse draft', e);
       }
     }
+
+    const saved = localStorage.getItem(SAVED_CARDS_KEY);
+    if (saved) {
+      try {
+        setSavedCards(JSON.parse(saved));
+      } catch (e) {
+        console.error('Failed to parse saved cards', e);
+      }
+    }
+
+    // PWA Install prompt
+    const handleBeforeInstallPrompt = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    // Fetch stats
+    fetch('/api/stats')
+      .then(res => res.json())
+      .then(data => setStats(data))
+      .catch(err => console.error('Error fetching stats:', err));
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
   }, []);
 
   // Save draft
@@ -85,12 +112,18 @@ export default function Home() {
     }
   }, [formData, mounted]);
 
-  // Save theme
-  useEffect(() => {
-    if (mounted) {
-      localStorage.setItem('carqr_theme', isDarkMode ? 'dark' : 'light');
-    }
-  }, [isDarkMode, mounted]);
+  const [isSaved, setIsSaved] = useState(false);
+
+  const saveCardToProfile = () => {
+    const newSaved = [...savedCards, { ...formData }];
+    setSavedCards(newSaved);
+    localStorage.setItem(SAVED_CARDS_KEY, JSON.stringify(newSaved));
+    triggerVibration(50);
+    setIsSaved(true);
+    setTimeout(() => {
+      window.location.href = '/cabinet';
+    }, 800);
+  };
 
   const validateField = useCallback((name: string, value: string) => {
     let error = '';
@@ -274,26 +307,140 @@ export default function Home() {
     img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
   };
 
+  const installPWA = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setDeferredPrompt(null);
+    }
+  };
+
+  const shareQRImage = async () => {
+    const svg = document.getElementById('qr-code-svg');
+    if (!svg || !navigator.share) return;
+    
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    const scale = 4;
+    const size = 240 * scale;
+    canvas.width = size;
+    canvas.height = size;
+    
+    const img = new window.Image();
+    img.onload = async () => {
+      if (ctx) {
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, size, size);
+        
+        canvas.toBlob(async (blob) => {
+          if (!blob) return;
+          const file = new File([blob], `QR_${formData.plateNumber || 'car'}.png`, { type: 'image/png' });
+          
+          try {
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+              await navigator.share({
+                files: [file],
+                title: 'Моя QR-визитка',
+                text: 'Отсканируй, чтобы связаться со мной!',
+              });
+            } else {
+              // Fallback to regular share if file share not supported
+              shareApp();
+            }
+          } catch (err) {
+            if (err instanceof Error && err.name !== 'AbortError') {
+              console.error('Error sharing image:', err);
+            }
+          }
+        }, 'image/png');
+      }
+    };
+    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+  };
+
   if (!mounted) return null;
 
   return (
-    <div className={`${isDarkMode ? 'dark' : ''} min-h-screen pb-4 selection:bg-apple-red selection:text-white transition-colors duration-300`} suppressHydrationWarning>
+    <div className="min-h-screen bg-black text-white selection:bg-apple-red selection:text-white transition-colors duration-300" suppressHydrationWarning>
       <header className="glass-panel sticky top-0 z-50 mx-2 mt-2 px-4 h-14 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 red-gradient rounded-lg flex items-center justify-center shadow-lg red-glow">
             <Car className="w-5 h-5 text-white" />
           </div>
-          <span className={`font-bold text-xl tracking-tight ${isDarkMode ? 'bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60' : 'text-gray-900'}`}>CarQR</span>
+          <span className="font-bold text-xl tracking-tight">CarQR</span>
         </div>
-        <button
-          onClick={() => setIsDarkMode(!isDarkMode)}
-          className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all border border-white/10"
-        >
-          {isDarkMode ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5 text-gray-600" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/cabinet"
+            className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-all relative"
+            title="Личный кабинет"
+          >
+            <User className="w-5 h-5" />
+            {savedCards.length > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-apple-red text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                {savedCards.length}
+              </span>
+            )}
+          </Link>
+
+          {deferredPrompt && (
+            <button
+              onClick={installPWA}
+              className="px-3 h-9 rounded-full bg-apple-red text-white text-xs font-medium flex items-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-all"
+            >
+              <DownloadCloud className="w-4 h-4" />
+              <span className="hidden sm:inline">Установить</span>
+            </button>
+          )}
+        </div>
       </header>
 
       <main className="max-w-xl mx-auto p-2 space-y-4">
+        {/* Admin Stats Section */}
+        <div className="glass-card p-4 relative overflow-hidden">
+          <button
+            type="button"
+            onClick={() => setShowStats(!showStats)}
+            className="w-full flex items-center justify-between text-left group focus:outline-none rounded-xl p-1 -ml-1 hover:bg-white/5 transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-apple-red/20 flex items-center justify-center">
+                <BarChart3 className="w-5 h-5 text-apple-red" />
+              </div>
+              <h2 className="text-lg font-bold tracking-tight">Статистика</h2>
+            </div>
+            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+              {showStats ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </div>
+          </button>
+
+          <AnimatePresence>
+            {showStats && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="pt-4 grid grid-cols-2 gap-4">
+                  <div className="glass-panel p-4 flex flex-col items-center justify-center text-center">
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Всего сканирований</span>
+                    <span className="text-3xl font-black text-apple-red">{stats?.totalScans || 0}</span>
+                  </div>
+                  <div className="glass-panel p-4 flex flex-col items-center justify-center text-center">
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Активных визиток</span>
+                    <span className="text-3xl font-black text-gray-900 dark:text-white">{Object.keys(stats?.cardScans || {}).length}</span>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
         <div className="glass-card p-4 md:p-6 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-48 h-48 bg-apple-red/10 rounded-full -mr-24 -mt-24 blur-3xl"></div>
           
@@ -303,7 +450,7 @@ export default function Home() {
             </div>
             <div>
               <h1 className="text-2xl font-bold tracking-tight">Создать визитку</h1>
-              <p className={`${isDarkMode ? 'text-white/50' : 'text-gray-500'} text-xs font-medium`}>Безопасное шифрование данных</p>
+              <p className="text-gray-500 text-xs font-medium">Безопасное шифрование данных</p>
             </div>
           </div>
 
@@ -328,7 +475,7 @@ export default function Home() {
                   exit={{ height: 0, opacity: 0 }}
                   className="overflow-hidden"
                 >
-                  <div className={`pt-3 space-y-3 ${isDarkMode ? 'text-white/60' : 'text-gray-600'} text-sm leading-relaxed`}>
+                  <div className="pt-3 space-y-3 text-gray-400 text-sm leading-relaxed">
                     <div className="flex gap-3">
                       <div className="w-6 h-6 rounded-full bg-apple-red/20 flex items-center justify-center shrink-0 text-apple-red font-bold text-xs">1</div>
                       <p>Заполните данные о вашем автомобиле и контактную информацию.</p>
@@ -376,7 +523,7 @@ export default function Home() {
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                       <div className="space-y-2">
-                        <label className={`text-[10px] font-bold ${isDarkMode ? 'text-white/40' : 'text-gray-400'} uppercase tracking-widest ml-1`}>Марка и модель</label>
+                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Марка и модель</label>
                         <motion.div
                           animate={errors.carModel ? { x: [-4, 4, -4, 4, 0] } : {}}
                           transition={{ duration: 0.4 }}
@@ -388,12 +535,12 @@ export default function Home() {
                             value={formData.carModel || ''}
                             onChange={handleInputChange}
                             placeholder="Tesla Model 3"
-                            className={`w-full bg-white/5 border-2 ${errors.carModel ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/10 hover:border-white/20'} rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all outline-none placeholder:text-white/20`}
+                            className={`w-full bg-white/5 border-2 ${errors.carModel ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
                           />
                         </motion.div>
                       </div>
                       <div className="space-y-2">
-                        <label className={`text-[10px] font-bold ${isDarkMode ? 'text-white/40' : 'text-gray-400'} uppercase tracking-widest ml-1`}>Госномер</label>
+                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Госномер</label>
                         <motion.div
                           animate={errors.plateNumber ? { x: [-4, 4, -4, 4, 0] } : {}}
                           transition={{ duration: 0.4 }}
@@ -405,7 +552,7 @@ export default function Home() {
                             value={formData.plateNumber || ''}
                             onChange={handleInputChange}
                             placeholder="А123ВС 777"
-                            className={`w-full bg-white/5 border-2 ${errors.plateNumber ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/10 hover:border-white/20'} rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all font-mono uppercase tracking-widest outline-none placeholder:text-white/20`}
+                            className={`w-full bg-white/5 border-2 ${errors.plateNumber ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all font-mono uppercase tracking-widest outline-none placeholder:text-gray-600`}
                           />
                         </motion.div>
                       </div>
@@ -443,7 +590,7 @@ export default function Home() {
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                       <div className="space-y-2">
-                        <label className={`text-[10px] font-bold ${isDarkMode ? 'text-white/40' : 'text-gray-400'} uppercase tracking-widest ml-1`}>Ваше имя</label>
+                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Ваше имя</label>
                         <motion.div
                           animate={errors.ownerName ? { x: [-4, 4, -4, 4, 0] } : {}}
                           transition={{ duration: 0.4 }}
@@ -455,12 +602,12 @@ export default function Home() {
                             value={formData.ownerName || ''}
                             onChange={handleInputChange}
                             placeholder="Иван Иванов"
-                            className={`w-full bg-white/5 border-2 ${errors.ownerName ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/10 hover:border-white/20'} rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all outline-none placeholder:text-white/20`}
+                            className={`w-full bg-white/5 border-2 ${errors.ownerName ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
                           />
                         </motion.div>
                       </div>
                       <div className="space-y-2">
-                        <label className={`text-[10px] font-bold ${isDarkMode ? 'text-white/40' : 'text-gray-400'} uppercase tracking-widest ml-1`}>Телефон</label>
+                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Телефон</label>
                         <motion.div
                           animate={errors.phone1 ? { x: [-4, 4, -4, 4, 0] } : {}}
                           transition={{ duration: 0.4 }}
@@ -473,7 +620,7 @@ export default function Home() {
                             value={formData.phone1 || ''}
                             onChange={handleInputChange}
                             placeholder="+7 (900) 000-00-00"
-                            className={`w-full bg-white/5 border-2 ${errors.phone1 ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/10 hover:border-white/20'} rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all outline-none placeholder:text-white/20`}
+                            className={`w-full bg-white/5 border-2 ${errors.phone1 ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
                           />
                         </motion.div>
                       </div>
@@ -511,25 +658,25 @@ export default function Home() {
                   >
                     <div className="grid grid-cols-1 gap-4 pt-2">
                       <div className="space-y-2">
-                        <label className={`text-[10px] font-bold ${isDarkMode ? 'text-white/40' : 'text-gray-400'} uppercase tracking-widest ml-1`}>Telegram</label>
+                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Telegram</label>
                         <input
                           name="telegram"
                           value={formData.telegram || ''}
                           onChange={handleInputChange}
                           placeholder="username"
-                          className="w-full bg-white/5 border-2 border-white/10 hover:border-white/20 rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all outline-none placeholder:text-white/20"
+                          className="w-full bg-white/5 border-2 border-white/5 hover:border-white/10 rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600"
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <label className={`text-[10px] font-bold ${isDarkMode ? 'text-white/40' : 'text-gray-400'} uppercase tracking-widest ml-1`}>WhatsApp</label>
+                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">WhatsApp</label>
                         <input
                           type="tel"
                           name="whatsapp"
                           value={formData.whatsapp || ''}
                           onChange={handleInputChange}
                           placeholder="+7..."
-                          className="w-full bg-white/5 border-2 border-white/10 hover:border-white/20 rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all outline-none placeholder:text-white/20"
+                          className="w-full bg-white/5 border-2 border-white/5 hover:border-white/10 rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600"
                         />
                       </div>
                     </div>
@@ -575,10 +722,10 @@ export default function Home() {
                             className={`flex flex-col items-center justify-center min-h-[80px] p-3 rounded-2xl border-2 transition-all active:scale-95 ${
                               isActive
                                 ? 'bg-apple-red border-transparent text-white red-glow'
-                                : 'bg-white/5 border-white/10 text-white/60 hover:border-white/20'
+                                : 'bg-white/5 border-white/5 text-gray-500 hover:border-white/10'
                             }`}
                           >
-                            <btn.icon className={`w-6 h-6 mb-1 ${isActive ? 'text-white' : 'text-white/40'}`} />
+                            <btn.icon className={`w-6 h-6 mb-1 ${isActive ? 'text-white' : 'text-gray-600'}`} />
                             <span className="text-[9px] font-black uppercase tracking-widest text-center">
                               {btn.label}
                             </span>
@@ -619,7 +766,7 @@ export default function Home() {
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                       <div className="space-y-2">
-                        <label className={`text-[10px] font-bold ${isDarkMode ? 'text-white/40' : 'text-gray-400'} uppercase tracking-widest ml-1`}>Основной цвет</label>
+                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Основной цвет</label>
                         <div className="flex gap-3 items-center">
                           <input
                             type="color"
@@ -633,20 +780,20 @@ export default function Home() {
                             name="themeColor"
                             value={formData.themeColor}
                             onChange={handleInputChange}
-                            className="flex-1 bg-white/5 border-2 border-white/10 rounded-xl px-3 py-2 text-xs font-mono text-white/60"
+                            className="flex-1 bg-white/5 border-2 border-white/5 rounded-xl px-3 py-2 text-xs font-mono text-gray-500"
                           />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <label className={`text-[10px] font-bold ${isDarkMode ? 'text-white/40' : 'text-gray-400'} uppercase tracking-widest ml-1`}>Текст рядом с QR</label>
+                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Текст рядом с QR</label>
                         <div className="relative">
-                          <Type className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20" />
+                          <Type className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
                           <input
                             name="qrText"
                             value={formData.qrText || ''}
                             onChange={handleInputChange}
                             placeholder="Сканируй меня!"
-                            className="w-full bg-white/5 border-2 border-white/10 rounded-xl pl-10 pr-4 py-3 text-base focus:border-apple-red outline-none transition-all placeholder:text-white/20"
+                            className="w-full bg-white/5 border-2 border-white/5 rounded-xl pl-10 pr-4 py-3 text-base focus:border-apple-red outline-none transition-all placeholder:text-gray-600"
                           />
                         </div>
                       </div>
@@ -684,7 +831,7 @@ export default function Home() {
             </button>
 
             {errors.general && (
-              <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-2xl flex items-center gap-3 text-red-800 text-sm font-medium">
+              <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3 text-red-500 text-sm font-medium">
                 <AlertTriangle className="w-5 h-5 flex-shrink-0" />
                 {errors.general}
               </div>
@@ -707,14 +854,14 @@ export default function Home() {
                   showContact: true,
                   quickButtons: ['evacuation', 'damage', 'message'],
                   themeColor: '#991b1b',
-                  backgroundColor: '#ffffff',
-                  textColor: '#111827',
+                  backgroundColor: '#000000',
+                  textColor: '#ffffff',
                   qrText: '',
                 });
                 setErrors({});
                 localStorage.removeItem(STORAGE_KEY);
               }}
-              className="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors text-sm font-bold py-3 px-6 rounded-2xl hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800"
+              className="flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-sm font-bold py-3 px-6 rounded-2xl hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800"
             >
               <AlertTriangle className="w-5 h-5 rotate-180" />
               Очистить форму
@@ -763,16 +910,16 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex flex-col bg-black/90 backdrop-blur-2xl"
+            className="fixed inset-0 z-50 flex flex-col bg-black/95 backdrop-blur-2xl"
           >
             {/* Header */}
             <header className="flex items-center justify-between px-8 py-6 border-b border-white/10">
               <h2 className="text-2xl font-bold tracking-tight">Ваш QR-код</h2>
               <button 
                 onClick={() => setShowQR(false)}
-                className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
+                className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-all"
               >
-                <ChevronDown className="w-6 h-6" />
+                <Plus className="w-6 h-6 rotate-45" />
               </button>
             </header>
 
@@ -799,25 +946,94 @@ export default function Home() {
               </div>
 
               <div className="w-full max-w-sm space-y-4">
-                <button
-                  onClick={downloadQR}
-                  className="w-full py-5 px-8 rounded-3xl red-gradient text-white font-bold flex items-center justify-center gap-3 shadow-xl red-glow hover:brightness-110 transition-all"
-                >
-                  <Download className="w-6 h-6" />
-                  Скачать PNG
-                </button>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={downloadQR}
+                    className="py-4 px-4 rounded-2xl red-gradient text-white font-bold flex flex-col items-center justify-center gap-2 shadow-xl red-glow hover:brightness-110 transition-all"
+                  >
+                    <Download className="w-5 h-5" />
+                    <span className="text-[10px] uppercase tracking-widest">Скачать PNG</span>
+                  </button>
+                  
+                  <button
+                    onClick={saveCardToProfile}
+                    disabled={isSaved}
+                    className={`py-4 px-4 rounded-2xl font-bold flex flex-col items-center justify-center gap-2 border transition-all ${
+                      isSaved 
+                        ? 'bg-green-500/20 border-green-500/30 text-green-500' 
+                        : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
+                    }`}
+                  >
+                    {isSaved ? <Check className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+                    <span className="text-[10px] uppercase tracking-widest">
+                      {isSaved ? 'Сохранено' : 'В профиль'}
+                    </span>
+                  </button>
+                </div>
+
+                <div className="space-y-3">
+                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] text-center">Поделиться ссылкой</p>
+                  <div className="flex justify-center gap-4">
+                    <button
+                      onClick={() => {
+                        const text = encodeURIComponent('Моя QR-визитка для авто');
+                        const url = encodeURIComponent(generatedUrl || '');
+                        window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
+                      }}
+                      className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center border border-blue-500/20 hover:bg-blue-500/20 transition-all"
+                      title="Telegram"
+                    >
+                      <Send className="w-5 h-5 text-blue-500" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        const text = encodeURIComponent('Моя QR-визитка для авто: ');
+                        const url = encodeURIComponent(generatedUrl || '');
+                        window.open(`https://wa.me/?text=${text}${url}`, '_blank');
+                      }}
+                      className="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center border border-green-500/20 hover:bg-green-500/20 transition-all"
+                      title="WhatsApp"
+                    >
+                      <MessageSquare className="w-5 h-5 text-green-500" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        const url = encodeURIComponent(generatedUrl || '');
+                        window.open(`https://vk.com/share.php?url=${url}`, '_blank');
+                      }}
+                      className="w-12 h-12 rounded-full bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 hover:bg-indigo-500/20 transition-all"
+                      title="VK"
+                    >
+                      <span className="font-bold text-indigo-400 text-sm">VK</span>
+                    </button>
+                    <button
+                      onClick={() => shareQRImage()}
+                      className="w-12 h-12 rounded-full bg-apple-red/10 flex items-center justify-center border border-apple-red/20 hover:bg-apple-red/20 transition-all"
+                      title="Поделиться картинкой"
+                    >
+                      <ImageIcon className="w-5 h-5 text-apple-red" />
+                    </button>
+                    <button
+                      onClick={() => shareApp()}
+                      className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all"
+                      title="Другое"
+                    >
+                      <Plus className="w-5 h-5 text-gray-400" />
+                    </button>
+                  </div>
+                </div>
                 
                 <button
-                  onClick={() => copyToClipboard(generatedUrl)}
-                  className="w-full py-5 px-8 rounded-3xl bg-white/10 text-white font-bold flex items-center justify-center gap-3 border border-white/10 hover:bg-white/20 transition-all"
+                  onClick={() => copyToClipboard(generatedUrl || '')}
+                  className="w-full py-4 px-8 rounded-2xl bg-white/5 text-white font-bold flex items-center justify-center gap-3 border border-white/10 hover:bg-white/10 transition-all"
                 >
-                  <Send className="w-6 h-6" />
+                  <Check className="w-5 h-5 text-white/30" />
                   Копировать ссылку
                 </button>
               </div>
 
               <div className="glass-panel p-6 w-full max-w-sm">
-                <p className="text-xs text-white/40 leading-relaxed text-center font-medium">
+                <p className="text-xs text-gray-500 leading-relaxed text-center font-medium">
                   Распечатайте этот код и разместите его под лобовым стеклом. При сканировании откроется ваша персональная визитка.
                 </p>
               </div>

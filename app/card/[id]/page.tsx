@@ -16,7 +16,8 @@ import {
   Download,
   User,
   Zap,
-  ChevronDown
+  ChevronDown,
+  Plus
 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -43,6 +44,18 @@ export default function PublicCardView() {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
+    
+    // Ensure dark theme is applied for public view
+    document.documentElement.classList.add('dark');
+
+    // Track scan
+    if (id) {
+      fetch('/api/stats', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cardId: id }),
+      }).catch(err => console.error('Error tracking scan:', err));
+    }
   }, [card, id]);
 
   const sendAlert = (type: string) => {
@@ -98,13 +111,13 @@ export default function PublicCardView() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-black p-8 text-center">
         <div className="w-20 h-20 bg-white/5 rounded-[2rem] flex items-center justify-center mb-6 border border-white/10">
-          <Info className="w-10 h-10 text-white/40" />
+          <Info className="w-10 h-10 text-gray-400" />
         </div>
-        <h1 className="text-2xl font-bold text-white tracking-tight">Визитка не найдена</h1>
-        <p className="text-white/40 mt-3 max-w-xs leading-relaxed">Возможно, ссылка повреждена или неверна. Попробуйте отсканировать код еще раз.</p>
+        <h1 className="text-2xl font-bold tracking-tight">Визитка не найдена</h1>
+        <p className="text-gray-400 mt-3 max-w-xs leading-relaxed">Возможно, ссылка повреждена или неверна. Попробуйте отсканировать код еще раз.</p>
         <button 
           onClick={() => window.location.href = '/'}
-          className="mt-8 py-4 px-8 rounded-2xl bg-white/10 text-white font-bold hover:bg-white/20 transition-all"
+          className="mt-8 py-4 px-8 rounded-2xl bg-white/5 text-white font-bold hover:bg-white/10 transition-all border border-white/5"
         >
           На главную
         </button>
@@ -136,20 +149,18 @@ export default function PublicCardView() {
             <div className="w-16 h-16 glass-panel rounded-2xl flex items-center justify-center border border-white/10 shadow-xl">
               <Car className="w-8 h-8 text-apple-red" />
             </div>
-            <button 
-              onClick={() => setShowQR(true)}
-              className="w-12 h-12 glass-panel rounded-2xl flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all shadow-xl"
+            <div className="w-12 h-12 glass-panel rounded-2xl flex items-center justify-center border border-white/10 hover:bg-white/5 transition-all shadow-xl"
             >
-              <QrCode className="w-6 h-6 text-white/60" />
-            </button>
+              <QrCode className="w-6 h-6 text-gray-400" />
+            </div>
           </div>
           
           <div className="space-y-4">
             <h1 className="text-4xl font-black tracking-tight leading-tight">
               {card.carModel}
             </h1>
-            <div className="inline-flex items-center gap-3 px-6 py-3 bg-white rounded-2xl shadow-2xl transform -rotate-1">
-              <span className="text-2xl font-black tracking-widest text-black uppercase font-mono">
+            <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl shadow-2xl transform -rotate-1 border border-white/10">
+              <span className="text-2xl font-black tracking-widest text-white uppercase font-mono">
                 {card.plateNumber}
               </span>
             </div>
@@ -158,6 +169,63 @@ export default function PublicCardView() {
       </div>
 
       <main className="max-w-md mx-auto px-6 -mt-12 space-y-8 relative z-20">
+        {/* Share Section */}
+        <section className="glass-card p-6 space-y-4">
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] text-center">Поделиться этой визиткой</p>
+          <div className="flex justify-center gap-4">
+            <button
+              onClick={() => {
+                const text = encodeURIComponent(`Визитка авто: ${card.carModel} (${card.plateNumber})`);
+                const url = encodeURIComponent(window.location.href);
+                window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
+              }}
+              className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center border border-blue-500/30 hover:bg-blue-500/30 transition-all"
+              title="Telegram"
+            >
+              <Send className="w-5 h-5 text-blue-400" />
+            </button>
+            <button
+              onClick={() => {
+                const text = encodeURIComponent(`Визитка авто: ${card.carModel} (${card.plateNumber}) - `);
+                const url = encodeURIComponent(window.location.href);
+                window.open(`https://wa.me/?text=${text}${url}`, '_blank');
+              }}
+              className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center border border-green-500/30 hover:bg-green-500/30 transition-all"
+              title="WhatsApp"
+            >
+              <MessageSquare className="w-5 h-5 text-green-400" />
+            </button>
+            <button
+              onClick={() => {
+                const url = encodeURIComponent(window.location.href);
+                window.open(`https://vk.com/share.php?url=${url}`, '_blank');
+              }}
+              className="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30 hover:bg-indigo-500/30 transition-all"
+              title="VK"
+            >
+              <span className="font-bold text-indigo-400 text-sm">VK</span>
+            </button>
+            <button
+              onClick={() => {
+                if (navigator.share) {
+                  navigator.share({
+                    title: `Визитка авто: ${card.carModel}`,
+                    text: `Свяжитесь с владельцем авто ${card.plateNumber}`,
+                    url: window.location.href,
+                  }).catch(console.error);
+                } else {
+                  navigator.clipboard.writeText(window.location.href);
+                  alert('Ссылка скопирована');
+                }
+              }}
+              className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all"
+              title="Другое"
+            >
+              <Plus className="w-5 h-5 text-gray-500" />
+            </button>
+          </div>
+        </section>
+
         {/* Quick Actions */}
         {card.quickButtons.length > 0 && (
           <section className="grid grid-cols-2 gap-4">
@@ -175,14 +243,14 @@ export default function PublicCardView() {
                   disabled={!!alertSent}
                   className={`relative overflow-hidden flex flex-col items-center justify-center min-h-[120px] p-6 rounded-[2.5rem] transition-all border shadow-2xl ${
                     isSent 
-                      ? 'bg-green-500/20 border-green-500/50 text-green-400' 
-                      : 'glass-panel border-white/10 text-white hover:bg-white/10'
+                      ? 'bg-green-500/20 border-green-500/50 text-green-500' 
+                      : 'glass-panel border-white/10 text-white hover:bg-white/5'
                   }`}
                 >
                   <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-3 ${isSent ? 'bg-green-500/20' : 'bg-apple-red/10'}`}>
-                    <Icon className={`w-6 h-6 ${isSent ? 'text-green-400 animate-pulse' : 'text-apple-red'}`} />
+                    <Icon className={`w-6 h-6 ${isSent ? 'text-green-500 animate-pulse' : 'text-apple-red'}`} />
                   </div>
-                  <span className="font-bold text-[10px] uppercase tracking-widest text-center opacity-80">
+                  <span className="font-bold text-[10px] uppercase tracking-widest text-center text-gray-500">
                     {isSent ? 'Отправлено!' : config.label}
                   </span>
                 </motion.button>
@@ -198,7 +266,7 @@ export default function PublicCardView() {
               <div className="w-8 h-8 rounded-lg bg-apple-red/20 flex items-center justify-center">
                 <User className="w-4 h-4 text-apple-red" />
               </div>
-              <h3 className="text-sm font-bold uppercase tracking-widest text-white/40">
+              <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400">
                 Владелец авто
               </h3>
             </div>
@@ -206,7 +274,7 @@ export default function PublicCardView() {
             <div className="space-y-8">
               <div className="flex items-center gap-5">
                 <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 shadow-inner">
-                  <User className="w-7 h-7 text-white/60" />
+                  <User className="w-7 h-7 text-gray-400" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold tracking-tight">{card.ownerName}</p>
@@ -222,15 +290,15 @@ export default function PublicCardView() {
                 <a href={`tel:${card.phone1}`} className="flex items-center justify-between group p-4 -m-4 rounded-3xl hover:bg-white/5 transition-all">
                   <div className="flex items-center gap-5">
                     <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
-                      <Phone className="w-6 h-6 text-white/40 group-hover:text-white/80" />
+                      <Phone className="w-6 h-6 text-gray-400 group-hover:text-gray-300" />
                     </div>
                     <div>
-                      <p className="text-[10px] uppercase font-bold tracking-widest text-white/30">Телефон</p>
+                      <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Телефон</p>
                       <p className="font-bold text-lg tracking-tight">{card.phone1}</p>
                     </div>
                   </div>
                   <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-apple-red/20 transition-all">
-                    <Phone className="w-4 h-4 text-white/20 group-hover:text-apple-red" />
+                    <Phone className="w-4 h-4 text-gray-400 group-hover:text-apple-red" />
                   </div>
                 </a>
 
@@ -238,15 +306,15 @@ export default function PublicCardView() {
                   <a href={`https://t.me/${card.telegram.replace('@', '')}`} target="_blank" className="flex items-center justify-between group p-4 -m-4 rounded-3xl hover:bg-white/5 transition-all">
                     <div className="flex items-center gap-5">
                       <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
-                        <Send className="w-6 h-6 text-white/40 group-hover:text-white/80" />
+                        <Send className="w-6 h-6 text-gray-400 group-hover:text-gray-300" />
                       </div>
                       <div>
-                        <p className="text-[10px] uppercase font-bold tracking-widest text-white/30">Telegram</p>
+                        <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Telegram</p>
                         <p className="font-bold text-lg tracking-tight">{card.telegram}</p>
                       </div>
                     </div>
                     <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-apple-red/20 transition-all">
-                      <Send className="w-4 h-4 text-white/20 group-hover:text-apple-red" />
+                      <Send className="w-4 h-4 text-gray-400 group-hover:text-apple-red" />
                     </div>
                   </a>
                 )}
@@ -255,15 +323,15 @@ export default function PublicCardView() {
                   <a href={`https://wa.me/${card.whatsapp.replace(/[^0-9]/g, '')}`} target="_blank" className="flex items-center justify-between group p-4 -m-4 rounded-3xl hover:bg-white/5 transition-all">
                     <div className="flex items-center gap-5">
                       <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
-                        <MessageSquare className="w-6 h-6 text-white/40 group-hover:text-white/80" />
+                        <MessageSquare className="w-6 h-6 text-gray-400 group-hover:text-gray-300" />
                       </div>
                       <div>
-                        <p className="text-[10px] uppercase font-bold tracking-widest text-white/30">WhatsApp</p>
+                        <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">WhatsApp</p>
                         <p className="font-bold text-lg tracking-tight">{card.whatsapp}</p>
                       </div>
                     </div>
                     <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-apple-red/20 transition-all">
-                      <MessageSquare className="w-4 h-4 text-white/20 group-hover:text-apple-red" />
+                      <MessageSquare className="w-4 h-4 text-gray-400 group-hover:text-apple-red" />
                     </div>
                   </a>
                 )}
@@ -271,10 +339,10 @@ export default function PublicCardView() {
                 {card.max && (
                   <div className="flex items-center gap-5 p-4 -m-4 rounded-3xl">
                     <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10">
-                      <Zap className="w-6 h-6 text-white/40" />
+                      <Zap className="w-6 h-6 text-gray-400" />
                     </div>
                     <div>
-                      <p className="text-[10px] uppercase font-bold tracking-widest text-white/30">Max</p>
+                      <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Max</p>
                       <p className="font-bold text-lg tracking-tight">{card.max}</p>
                     </div>
                   </div>
@@ -299,7 +367,7 @@ export default function PublicCardView() {
             <a 
               href={`https://t.me/${card.telegram.replace('@', '')}`}
               target="_blank"
-              className="flex items-center justify-center gap-3 bg-white/10 text-white py-6 rounded-[2rem] font-bold text-xl border border-white/10 hover:bg-white/20 transition-all active:scale-95"
+              className="flex items-center justify-center gap-3 bg-white/5 text-white py-6 rounded-[2rem] font-bold text-xl border border-white/10 hover:bg-white/10 transition-all active:scale-95"
             >
               <Send className="w-6 h-6" />
               Написать в Telegram
@@ -310,7 +378,7 @@ export default function PublicCardView() {
 
       <footer className="mt-20 mb-12 text-center space-y-8 px-6">
         <div className="flex flex-col items-center gap-6">
-          <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">Разработка и поддержка</p>
+          <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em]">Разработка и поддержка</p>
           <div className="flex items-center gap-8">
             <a 
               href="https://t.me/krisdev13" 
@@ -318,23 +386,23 @@ export default function PublicCardView() {
               className="group flex flex-col items-center gap-2"
             >
               <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-apple-red/20 group-hover:border-apple-red/30 transition-all">
-                <Send className="w-5 h-5 text-white/40 group-hover:text-apple-red" />
+                <Send className="w-5 h-5 text-gray-400 group-hover:text-apple-red" />
               </div>
-              <span className="text-[10px] font-bold text-white/40 group-hover:text-white/80 transition-colors">@krisdev13</span>
+              <span className="text-[10px] font-bold text-gray-500 group-hover:text-gray-400 transition-colors">@krisdev13</span>
             </a>
             <a 
               href="mailto:info@premiumwebsite.ru" 
               className="group flex flex-col items-center gap-2"
             >
               <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-apple-red/20 group-hover:border-apple-red/30 transition-all">
-                <Mail className="w-5 h-5 text-white/40 group-hover:text-apple-red" />
+                <Mail className="w-5 h-5 text-gray-400 group-hover:text-apple-red" />
               </div>
-              <span className="text-[10px] font-bold text-white/40 group-hover:text-white/80 transition-colors">Email</span>
+              <span className="text-[10px] font-bold text-gray-500 group-hover:text-gray-400 transition-colors">Email</span>
             </a>
           </div>
         </div>
-        <div className="pt-8 border-t border-white/5">
-          <p className="text-[10px] text-white/10 font-bold uppercase tracking-widest">© 2026 CarQR. Все права защищены.</p>
+        <div className="pt-8 border-t border-white/10">
+          <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest">© 2026 CarQR. Все права защищены.</p>
         </div>
       </footer>
 
@@ -345,14 +413,14 @@ export default function PublicCardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex flex-col bg-black/90 backdrop-blur-2xl"
+            className="fixed inset-0 z-50 flex flex-col bg-black/95 backdrop-blur-2xl"
           >
             {/* Header */}
             <header className="flex items-center justify-between px-8 py-6 border-b border-white/10">
               <h2 className="text-2xl font-bold tracking-tight">Ваш QR-код</h2>
               <button 
                 onClick={() => setShowQR(false)}
-                className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
+                className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-all"
               >
                 <ChevronDown className="w-6 h-6" />
               </button>
@@ -391,14 +459,14 @@ export default function PublicCardView() {
                 
                 <button
                   onClick={() => setShowQR(false)}
-                  className="w-full py-5 px-8 rounded-3xl bg-white/10 text-white font-bold flex items-center justify-center gap-3 border border-white/10 hover:bg-white/20 transition-all"
+                  className="w-full py-5 px-8 rounded-3xl bg-white/5 text-white font-bold flex items-center justify-center gap-3 border border-white/10 hover:bg-white/10 transition-all"
                 >
                   Закрыть
                 </button>
               </div>
 
               <div className="glass-panel p-6 w-full max-w-sm">
-                <p className="text-xs text-white/40 leading-relaxed text-center font-medium">
+                <p className="text-xs text-gray-500 leading-relaxed text-center font-medium">
                   Распечатайте этот код и разместите его под лобовым стеклом. При сканировании откроется ваша персональная визитка.
                 </p>
               </div>

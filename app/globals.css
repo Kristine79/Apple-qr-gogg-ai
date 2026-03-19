@@ -8,12 +8,12 @@
 }
 
 :root {
-  --bg-color: #ffffff;
-  --text-color: #111827;
-  --glass-bg: rgba(0, 0, 0, 0.03);
-  --glass-border: rgba(0, 0, 0, 0.08);
-  --glass-card-bg: rgba(0, 0, 0, 0.05);
-  --glass-card-border: rgba(0, 0, 0, 0.1);
+  --bg-color: #000000;
+  --text-color: #ffffff;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-card-bg: rgba(255, 255, 255, 0.03);
+  --glass-card-border: rgba(255, 255, 255, 0.05);
   --accent-glow: rgba(255, 59, 48, 0.15);
 }
 
@@ -22,9 +22,9 @@
   --text-color: #ffffff;
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-card-bg: rgba(255, 255, 255, 0.1);
-  --glass-card-border: rgba(255, 255, 255, 0.2);
-  --accent-glow: rgba(255, 59, 48, 0.3);
+  --glass-card-bg: rgba(255, 255, 255, 0.03);
+  --glass-card-border: rgba(255, 255, 255, 0.05);
+  --accent-glow: rgba(255, 59, 48, 0.15);
 }
 
 @layer base {

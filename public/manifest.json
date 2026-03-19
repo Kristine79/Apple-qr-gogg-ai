@@ -1,0 +1,21 @@
+{
+  "name": "CarQR - Визитка для авто",
+  "short_name": "CarQR",
+  "description": "Удобная QR-визитка для вашего автомобиля",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#ff3b30",
+  "icons": [
+    {
+      "src": "https://picsum.photos/seed/carqr192/192/192",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://picsum.photos/seed/carqr512/512/512",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
