@@ -381,7 +381,7 @@ export default function Home() {
           >
             <User className="w-5 h-5" />
             {savedCards.length > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-apple-red text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-apple-red text-white text-xs font-bold rounded-full flex items-center justify-center">
                 {savedCards.length}
               </span>
             )}
@@ -390,7 +390,7 @@ export default function Home() {
           {deferredPrompt && (
             <button
               onClick={installPWA}
-              className="px-3 h-9 rounded-full bg-apple-red text-white text-xs font-medium flex items-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-all"
+              className="px-3 h-9 rounded-full bg-apple-red text-white text-sm font-medium flex items-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-all"
             >
               <DownloadCloud className="w-4 h-4" />
               <span className="hidden sm:inline">Установить</span>
@@ -428,11 +428,11 @@ export default function Home() {
               >
                 <div className="pt-3 grid grid-cols-2 gap-3">
                   <div className="glass-panel p-3 flex flex-col items-center justify-center text-center">
-                    <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Всего сканирований</span>
+                    <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Всего сканирований</span>
                     <span className="text-2xl font-black text-apple-red">{stats?.totalScans || 0}</span>
                   </div>
                   <div className="glass-panel p-3 flex flex-col items-center justify-center text-center">
-                    <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Активных визиток</span>
+                    <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Активных визиток</span>
                     <span className="text-2xl font-black text-gray-900 dark:text-white">{Object.keys(stats?.cardScans || {}).length}</span>
                   </div>
                 </div>
@@ -450,7 +450,7 @@ export default function Home() {
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight">Создать визитку</h1>
-              <p className="text-gray-500 text-[10px] font-medium">Безопасное шифрование данных</p>
+              <p className="text-gray-500 text-xs font-medium">Безопасное шифрование данных</p>
             </div>
           </div>
 
@@ -475,17 +475,17 @@ export default function Home() {
                   exit={{ height: 0, opacity: 0 }}
                   className="overflow-hidden"
                 >
-                  <div className="pt-2 space-y-2 text-gray-400 text-xs leading-relaxed">
+                  <div className="pt-2 space-y-2 text-gray-400 text-sm leading-relaxed">
                     <div className="flex gap-2">
-                      <div className="w-5 h-5 rounded-full bg-apple-red/20 flex items-center justify-center shrink-0 text-apple-red font-bold text-[10px]">1</div>
+                      <div className="w-5 h-5 rounded-full bg-apple-red/20 flex items-center justify-center shrink-0 text-apple-red font-bold text-xs">1</div>
                       <p>Заполните данные о вашем автомобиле и контактную информацию.</p>
                     </div>
                     <div className="flex gap-2">
-                      <div className="w-5 h-5 rounded-full bg-apple-red/20 flex items-center justify-center shrink-0 text-apple-red font-bold text-[10px]">2</div>
+                      <div className="w-5 h-5 rounded-full bg-apple-red/20 flex items-center justify-center shrink-0 text-apple-red font-bold text-xs">2</div>
                       <p>Сгенерируйте уникальный QR-код, который содержит зашифрованную ссылку.</p>
                     </div>
                     <div className="flex gap-2">
-                      <div className="w-5 h-5 rounded-full bg-apple-red/20 flex items-center justify-center shrink-0 text-apple-red font-bold text-[10px]">3</div>
+                      <div className="w-5 h-5 rounded-full bg-apple-red/20 flex items-center justify-center shrink-0 text-apple-red font-bold text-xs">3</div>
                       <p>Распечатайте код и разместите его под лобовым стеклом.</p>
                     </div>
                   </div>
@@ -523,7 +523,7 @@ export default function Home() {
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
                       <div className="space-y-1.5">
-                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">Марка и модель</label>
+                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Марка и модель</label>
                         <motion.div
                           animate={errors.carModel ? { x: [-4, 4, -4, 4, 0] } : {}}
                           transition={{ duration: 0.4 }}
@@ -535,12 +535,12 @@ export default function Home() {
                             value={formData.carModel || ''}
                             onChange={handleInputChange}
                             placeholder="Tesla Model 3"
-                            className={`w-full bg-white/5 border-2 ${errors.carModel ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-3 py-2 text-sm focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
+                            className={`w-full bg-white/5 border-2 ${errors.carModel ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-3 py-2 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
                           />
                         </motion.div>
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">Госномер</label>
+                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Госномер</label>
                         <motion.div
                           animate={errors.plateNumber ? { x: [-4, 4, -4, 4, 0] } : {}}
                           transition={{ duration: 0.4 }}
@@ -552,7 +552,7 @@ export default function Home() {
                             value={formData.plateNumber || ''}
                             onChange={handleInputChange}
                             placeholder="А123ВС 777"
-                            className={`w-full bg-white/5 border-2 ${errors.plateNumber ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-3 py-2 text-sm focus:border-apple-red transition-all font-mono uppercase tracking-widest outline-none placeholder:text-gray-600`}
+                            className={`w-full bg-white/5 border-2 ${errors.plateNumber ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-3 py-2 text-base focus:border-apple-red transition-all font-mono uppercase tracking-widest outline-none placeholder:text-gray-600`}
                           />
                         </motion.div>
                       </div>
@@ -590,7 +590,7 @@ export default function Home() {
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
                       <div className="space-y-1.5">
-                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">Ваше имя</label>
+                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Ваше имя</label>
                         <motion.div
                           animate={errors.ownerName ? { x: [-4, 4, -4, 4, 0] } : {}}
                           transition={{ duration: 0.4 }}
@@ -602,12 +602,12 @@ export default function Home() {
                             value={formData.ownerName || ''}
                             onChange={handleInputChange}
                             placeholder="Иван Иванов"
-                            className={`w-full bg-white/5 border-2 ${errors.ownerName ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-3 py-2 text-sm focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
+                            className={`w-full bg-white/5 border-2 ${errors.ownerName ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-3 py-2 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
                           />
                         </motion.div>
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">Телефон</label>
+                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Телефон</label>
                         <motion.div
                           animate={errors.phone1 ? { x: [-4, 4, -4, 4, 0] } : {}}
                           transition={{ duration: 0.4 }}
@@ -620,7 +620,7 @@ export default function Home() {
                             value={formData.phone1 || ''}
                             onChange={handleInputChange}
                             placeholder="+7 (900) 000-00-00"
-                            className={`w-full bg-white/5 border-2 ${errors.phone1 ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-3 py-2 text-sm focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
+                            className={`w-full bg-white/5 border-2 ${errors.phone1 ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-3 py-2 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
                           />
                         </motion.div>
                       </div>
@@ -658,25 +658,25 @@ export default function Home() {
                   >
                     <div className="grid grid-cols-1 gap-3 pt-1">
                       <div className="space-y-1.5">
-                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">Telegram</label>
+                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Telegram</label>
                         <input
                           name="telegram"
                           value={formData.telegram || ''}
                           onChange={handleInputChange}
                           placeholder="username"
-                          className="w-full bg-white/5 border-2 border-white/5 hover:border-white/10 rounded-xl px-3 py-2 text-sm focus:border-apple-red transition-all outline-none placeholder:text-gray-600"
+                          className="w-full bg-white/5 border-2 border-white/5 hover:border-white/10 rounded-xl px-3 py-2 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600"
                         />
                       </div>
 
                       <div className="space-y-1.5">
-                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">WhatsApp</label>
+                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">WhatsApp</label>
                         <input
                           type="tel"
                           name="whatsapp"
                           value={formData.whatsapp || ''}
                           onChange={handleInputChange}
                           placeholder="+7..."
-                          className="w-full bg-white/5 border-2 border-white/5 hover:border-white/10 rounded-xl px-3 py-2 text-sm focus:border-apple-red transition-all outline-none placeholder:text-gray-600"
+                          className="w-full bg-white/5 border-2 border-white/5 hover:border-white/10 rounded-xl px-3 py-2 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600"
                         />
                       </div>
                     </div>
@@ -726,7 +726,7 @@ export default function Home() {
                             }`}
                           >
                             <btn.icon className={`w-4 h-4 mb-1 ${isActive ? 'text-white' : 'text-gray-600'}`} />
-                            <span className="text-[8px] font-black uppercase tracking-widest text-center">
+                            <span className="text-xs font-black uppercase tracking-widest text-center">
                               {btn.label}
                             </span>
                           </button>
@@ -766,7 +766,7 @@ export default function Home() {
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
                       <div className="space-y-1.5">
-                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">Основной цвет</label>
+                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Основной цвет</label>
                         <div className="flex gap-2 items-center">
                           <input
                             type="color"
@@ -780,12 +780,12 @@ export default function Home() {
                             name="themeColor"
                             value={formData.themeColor}
                             onChange={handleInputChange}
-                            className="flex-1 bg-white/5 border-2 border-white/5 rounded-xl px-2 py-1.5 text-[10px] font-mono text-gray-500"
+                            className="flex-1 bg-white/5 border-2 border-white/5 rounded-xl px-2 py-1.5 text-xs font-mono text-gray-500"
                           />
                         </div>
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">Текст рядом с QR</label>
+                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Текст рядом с QR</label>
                         <div className="relative">
                           <Type className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-600" />
                           <input
@@ -793,7 +793,7 @@ export default function Home() {
                             value={formData.qrText || ''}
                             onChange={handleInputChange}
                             placeholder="Сканируй меня!"
-                            className="w-full bg-white/5 border-2 border-white/5 rounded-xl pl-8 pr-3 py-2 text-sm focus:border-apple-red outline-none transition-all placeholder:text-gray-600"
+                            className="w-full bg-white/5 border-2 border-white/5 rounded-xl pl-8 pr-3 py-2 text-base focus:border-apple-red outline-none transition-all placeholder:text-gray-600"
                           />
                         </div>
                       </div>
@@ -806,7 +806,7 @@ export default function Home() {
             <button
               type="submit"
               disabled={isGenerating}
-              className={`w-full py-3 px-6 rounded-xl font-bold text-sm uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl ${
+              className={`w-full py-3 px-6 rounded-xl font-bold text-base uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl ${
                 isSuccess 
                   ? 'bg-green-500 text-white' 
                   : 'red-gradient text-white red-glow hover:brightness-110'
@@ -831,7 +831,7 @@ export default function Home() {
             </button>
 
             {errors.general && (
-              <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3 text-red-500 text-sm font-medium">
+              <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3 text-red-500 text-base font-medium">
                 <AlertTriangle className="w-5 h-5 flex-shrink-0" />
                 {errors.general}
               </div>
@@ -861,7 +861,7 @@ export default function Home() {
                 setErrors({});
                 localStorage.removeItem(STORAGE_KEY);
               }}
-              className="flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-sm font-bold py-3 px-6 rounded-2xl hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800"
+              className="flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-base font-bold py-3 px-6 rounded-2xl hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-800"
             >
               <AlertTriangle className="w-5 h-5 rotate-180" />
               Очистить форму
@@ -871,20 +871,20 @@ export default function Home() {
 
         <footer className="mt-16 mb-8 text-center space-y-8 relative z-10">
           <div className="flex flex-col items-center gap-6">
-            <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em]">Разработка и поддержка</p>
+            <p className="text-xs font-black text-white/30 uppercase tracking-[0.3em]">Разработка и поддержка</p>
             <div className="flex flex-col items-center gap-4">
               <div className="flex items-center gap-8">
                 <a 
                   href="https://t.me/krisdev13" 
                   target="_blank" 
-                  className="flex items-center gap-2 text-sm font-bold text-white/60 hover:text-apple-red transition-colors"
+                  className="flex items-center gap-2 text-base font-bold text-white/60 hover:text-apple-red transition-colors"
                 >
                   <Send className="w-5 h-5" />
                   @krisdev13
                 </a>
                 <a 
                   href="mailto:info@premiumwebsite.ru" 
-                  className="flex items-center gap-2 text-sm font-bold text-white/60 hover:text-apple-red transition-colors"
+                  className="flex items-center gap-2 text-base font-bold text-white/60 hover:text-apple-red transition-colors"
                 >
                   <Mail className="w-5 h-5" />
                   Email
@@ -893,13 +893,13 @@ export default function Home() {
               <a 
                 href="https://t.me/avtovikupkaluga" 
                 target="_blank" 
-                className="glass-panel px-6 py-2 text-white/40 text-[10px] font-bold hover:text-apple-red transition-all border-white/5"
+                className="glass-panel px-6 py-2 text-white/40 text-xs font-bold hover:text-apple-red transition-all border-white/5"
               >
                 автовыкуп в Калуге + 200км
               </a>
             </div>
           </div>
-          <p className="text-[10px] text-white/20 font-bold tracking-widest uppercase">© 2026 CarQR. Все права защищены.</p>
+          <p className="text-xs text-white/20 font-bold tracking-widest uppercase">© 2026 CarQR. Все права защищены.</p>
         </footer>
       </main>
 
@@ -930,15 +930,15 @@ export default function Home() {
                   <QRCodeSVG 
                     id="qr-code-svg"
                     value={generatedUrl}
-                    size={240}
-                    level="H"
+                    size={280}
+                    level="Q"
                     includeMargin={true}
                     imageSettings={{
                       src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff3b30'%3E%3Cpath d='M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z'/%3E%3C/svg%3E",
                       x: undefined,
                       y: undefined,
-                      height: 40,
-                      width: 40,
+                      height: 48,
+                      width: 48,
                       excavate: true,
                     }}
                   />

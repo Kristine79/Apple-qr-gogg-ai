@@ -18,7 +18,8 @@ import {
   Zap,
   ChevronDown,
   Plus,
-  ArrowLeft
+  ArrowLeft,
+  X
 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -173,7 +174,7 @@ export default function PublicCardView() {
               {card.carModel}
             </h1>
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl shadow-2xl transform -rotate-1 border border-white/10">
-              <span className="text-lg font-black tracking-widest text-white uppercase font-mono">
+              <span className="text-xl font-black tracking-widest text-white uppercase font-mono">
                 {card.plateNumber}
               </span>
             </div>
@@ -184,7 +185,7 @@ export default function PublicCardView() {
       <main className="max-w-md mx-auto px-5 -mt-6 space-y-5 relative z-20">
         {/* Share Section */}
         <section className="glass-card p-4 space-y-2.5">
-          <p className="text-[8px] font-bold text-gray-400 uppercase tracking-[0.2em] text-center">Поделиться визиткой</p>
+          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] text-center">Поделиться визиткой</p>
           <div className="flex justify-center gap-2.5">
             <button
               onClick={() => {
@@ -216,7 +217,7 @@ export default function PublicCardView() {
               className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30 hover:bg-indigo-500/30 transition-all"
               title="VK"
             >
-              <span className="font-bold text-indigo-400 text-xs">VK</span>
+              <span className="font-bold text-indigo-400 text-sm">VK</span>
             </button>
             <button
               onClick={() => {
@@ -263,7 +264,7 @@ export default function PublicCardView() {
                   <div className={`w-9 h-9 rounded-xl flex items-center justify-center mb-1.5 ${isSent ? 'bg-green-500/20' : 'bg-apple-red/10'}`}>
                     <Icon className={`w-4 h-4 ${isSent ? 'text-green-500 animate-pulse' : 'text-apple-red'}`} />
                   </div>
-                  <span className="font-bold text-[8px] uppercase tracking-widest text-center text-gray-500">
+                  <span className="font-bold text-[10px] uppercase tracking-widest text-center text-gray-500">
                     {isSent ? 'Отправлено!' : config.label}
                   </span>
                 </motion.button>
@@ -279,7 +280,7 @@ export default function PublicCardView() {
               <div className="w-6 h-6 rounded-lg bg-apple-red/20 flex items-center justify-center">
                 <User className="w-3 h-3 text-apple-red" />
               </div>
-              <h3 className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400">
                 Владелец авто
               </h3>
             </div>
@@ -292,7 +293,7 @@ export default function PublicCardView() {
                 <div>
                   <p className="text-lg font-bold tracking-tight">{card.ownerName}</p>
                   {card.telegram && (
-                    <p className="text-[10px] font-medium text-apple-red mt-0">
+                    <p className="text-xs font-medium text-apple-red mt-0">
                       {card.telegram}
                     </p>
                   )}
@@ -306,8 +307,8 @@ export default function PublicCardView() {
                       <Phone className="w-4 h-4 text-gray-400 group-hover:text-gray-300" />
                     </div>
                     <div>
-                      <p className="text-[8px] uppercase font-bold tracking-widest text-gray-500">Телефон</p>
-                      <p className="font-bold text-sm tracking-tight">{card.phone1}</p>
+                      <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Телефон</p>
+                      <p className="font-bold text-base tracking-tight">{card.phone1}</p>
                     </div>
                   </div>
                   <div className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-apple-red/20 transition-all">
@@ -322,8 +323,8 @@ export default function PublicCardView() {
                         <Send className="w-4 h-4 text-gray-400 group-hover:text-gray-300" />
                       </div>
                       <div>
-                        <p className="text-[8px] uppercase font-bold tracking-widest text-gray-500">Telegram</p>
-                        <p className="font-bold text-sm tracking-tight">{card.telegram}</p>
+                        <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Telegram</p>
+                        <p className="font-bold text-base tracking-tight">{card.telegram}</p>
                       </div>
                     </div>
                     <div className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-apple-red/20 transition-all">
@@ -339,8 +340,8 @@ export default function PublicCardView() {
                         <MessageSquare className="w-4 h-4 text-gray-400 group-hover:text-gray-300" />
                       </div>
                       <div>
-                        <p className="text-[8px] uppercase font-bold tracking-widest text-gray-500">WhatsApp</p>
-                        <p className="font-bold text-sm tracking-tight">{card.whatsapp}</p>
+                        <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">WhatsApp</p>
+                        <p className="font-bold text-base tracking-tight">{card.whatsapp}</p>
                       </div>
                     </div>
                     <div className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-apple-red/20 transition-all">
@@ -355,8 +356,8 @@ export default function PublicCardView() {
                       <Zap className="w-4 h-4 text-gray-400" />
                     </div>
                     <div>
-                      <p className="text-[8px] uppercase font-bold tracking-widest text-gray-500">Max</p>
-                      <p className="font-bold text-sm tracking-tight">{card.max}</p>
+                      <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Max</p>
+                      <p className="font-bold text-base tracking-tight">{card.max}</p>
                     </div>
                   </div>
                 )}
@@ -391,7 +392,7 @@ export default function PublicCardView() {
 
       <footer className="mt-8 mb-6 text-center space-y-5 px-5">
         <div className="flex flex-col items-center gap-3">
-          <p className="text-[8px] font-bold text-gray-500 uppercase tracking-[0.3em]">Разработка и поддержка</p>
+          <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em]">Разработка и поддержка</p>
           <div className="flex items-center gap-5">
             <a 
               href="https://t.me/krisdev13" 
@@ -401,7 +402,7 @@ export default function PublicCardView() {
               <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-apple-red/20 group-hover:border-apple-red/30 transition-all">
                 <Send className="w-3.5 h-3.5 text-gray-400 group-hover:text-apple-red" />
               </div>
-              <span className="text-[8px] font-bold text-gray-500 group-hover:text-gray-400 transition-colors">@krisdev13</span>
+              <span className="text-[10px] font-bold text-gray-500 group-hover:text-gray-400 transition-colors">@krisdev13</span>
             </a>
             <a 
               href="mailto:info@premiumwebsite.ru" 
@@ -410,12 +411,12 @@ export default function PublicCardView() {
               <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-apple-red/20 group-hover:border-apple-red/30 transition-all">
                 <Mail className="w-3.5 h-3.5 text-gray-400 group-hover:text-apple-red" />
               </div>
-              <span className="text-[8px] font-bold text-gray-500 group-hover:text-gray-400 transition-colors">Email</span>
+              <span className="text-[10px] font-bold text-gray-500 group-hover:text-gray-400 transition-colors">Email</span>
             </a>
           </div>
         </div>
         <div className="pt-4 border-t border-white/10">
-          <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest">© 2026 CarQR. Все права защищены.</p>
+          <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest">© 2026 CarQR. Все права защищены.</p>
         </div>
       </footer>
 
@@ -435,7 +436,7 @@ export default function PublicCardView() {
                 onClick={() => setShowQR(false)}
                 className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-all"
               >
-                <ChevronDown className="w-6 h-6" />
+                <X className="w-6 h-6" />
               </button>
             </header>
 
@@ -446,15 +447,15 @@ export default function PublicCardView() {
                   <QRCodeSVG 
                     id="qr-code-svg"
                     value={cardUrl}
-                    size={240}
-                    level="H"
+                    size={280}
+                    level="Q"
                     includeMargin={true}
                     imageSettings={{
                       src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff3b30'%3E%3Cpath d='M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z'/%3E%3C/svg%3E",
                       x: undefined,
                       y: undefined,
-                      height: 40,
-                      width: 40,
+                      height: 48,
+                      width: 48,
                       excavate: true,
                     }}
                   />
