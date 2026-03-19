@@ -399,22 +399,22 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="max-w-xl mx-auto p-2 space-y-4">
+      <main className="max-w-xl mx-auto p-2 space-y-3">
         {/* Admin Stats Section */}
-        <div className="glass-card p-4 relative overflow-hidden">
+        <div className="glass-card p-3 relative overflow-hidden">
           <button
             type="button"
             onClick={() => setShowStats(!showStats)}
             className="w-full flex items-center justify-between text-left group focus:outline-none rounded-xl p-1 -ml-1 hover:bg-white/5 transition-colors"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-apple-red/20 flex items-center justify-center">
-                <BarChart3 className="w-5 h-5 text-apple-red" />
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-lg bg-apple-red/20 flex items-center justify-center">
+                <BarChart3 className="w-4 h-4 text-apple-red" />
               </div>
-              <h2 className="text-lg font-bold tracking-tight">Статистика</h2>
+              <h2 className="text-base font-bold tracking-tight">Статистика</h2>
             </div>
-            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
-              {showStats ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+              {showStats ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             </div>
           </button>
 
@@ -426,14 +426,14 @@ export default function Home() {
                 exit={{ height: 0, opacity: 0 }}
                 className="overflow-hidden"
               >
-                <div className="pt-4 grid grid-cols-2 gap-4">
-                  <div className="glass-panel p-4 flex flex-col items-center justify-center text-center">
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Всего сканирований</span>
-                    <span className="text-3xl font-black text-apple-red">{stats?.totalScans || 0}</span>
+                <div className="pt-3 grid grid-cols-2 gap-3">
+                  <div className="glass-panel p-3 flex flex-col items-center justify-center text-center">
+                    <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Всего сканирований</span>
+                    <span className="text-2xl font-black text-apple-red">{stats?.totalScans || 0}</span>
                   </div>
-                  <div className="glass-panel p-4 flex flex-col items-center justify-center text-center">
-                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Активных визиток</span>
-                    <span className="text-3xl font-black text-gray-900 dark:text-white">{Object.keys(stats?.cardScans || {}).length}</span>
+                  <div className="glass-panel p-3 flex flex-col items-center justify-center text-center">
+                    <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Активных визиток</span>
+                    <span className="text-2xl font-black text-gray-900 dark:text-white">{Object.keys(stats?.cardScans || {}).length}</span>
                   </div>
                 </div>
               </motion.div>
@@ -441,29 +441,29 @@ export default function Home() {
           </AnimatePresence>
         </div>
 
-        <div className="glass-card p-4 md:p-6 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-48 h-48 bg-apple-red/10 rounded-full -mr-24 -mt-24 blur-3xl"></div>
+        <div className="glass-card p-4 md:p-5 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-apple-red/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
           
-          <div className="flex flex-col items-center text-center gap-2 mb-6 relative z-10">
-            <div className="w-12 h-12 bg-white/10 backdrop-blur-2xl rounded-xl flex items-center justify-center border border-white/20 shadow-2xl">
-              <QrCode className="w-6 h-6 text-apple-red" />
+          <div className="flex flex-col items-center text-center gap-1.5 mb-5 relative z-10">
+            <div className="w-10 h-10 bg-white/10 backdrop-blur-2xl rounded-xl flex items-center justify-center border border-white/20 shadow-2xl">
+              <QrCode className="w-5 h-5 text-apple-red" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">Создать визитку</h1>
-              <p className="text-gray-500 text-xs font-medium">Безопасное шифрование данных</p>
+              <h1 className="text-xl font-bold tracking-tight">Создать визитку</h1>
+              <p className="text-gray-500 text-[10px] font-medium">Безопасное шифрование данных</p>
             </div>
           </div>
 
           {/* Instruction Section */}
-          <div className="mb-4 border-b border-white/10 pb-4">
+          <div className="mb-4 border-b border-white/10 pb-3">
             <button
               type="button"
               onClick={() => toggleSection('instruction')}
               className="w-full flex items-center justify-between text-left group focus:outline-none rounded-xl p-1 -ml-1 hover:bg-white/5 transition-colors"
             >
-              <h2 className="text-lg font-bold tracking-tight">Как это работает?</h2>
-              <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
-                {expandedSections.instruction ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              <h2 className="text-base font-bold tracking-tight">Как это работает?</h2>
+              <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                {expandedSections.instruction ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
               </div>
             </button>
 
@@ -475,17 +475,17 @@ export default function Home() {
                   exit={{ height: 0, opacity: 0 }}
                   className="overflow-hidden"
                 >
-                  <div className="pt-3 space-y-3 text-gray-400 text-sm leading-relaxed">
-                    <div className="flex gap-3">
-                      <div className="w-6 h-6 rounded-full bg-apple-red/20 flex items-center justify-center shrink-0 text-apple-red font-bold text-xs">1</div>
+                  <div className="pt-2 space-y-2 text-gray-400 text-xs leading-relaxed">
+                    <div className="flex gap-2">
+                      <div className="w-5 h-5 rounded-full bg-apple-red/20 flex items-center justify-center shrink-0 text-apple-red font-bold text-[10px]">1</div>
                       <p>Заполните данные о вашем автомобиле и контактную информацию.</p>
                     </div>
-                    <div className="flex gap-3">
-                      <div className="w-6 h-6 rounded-full bg-apple-red/20 flex items-center justify-center shrink-0 text-apple-red font-bold text-xs">2</div>
+                    <div className="flex gap-2">
+                      <div className="w-5 h-5 rounded-full bg-apple-red/20 flex items-center justify-center shrink-0 text-apple-red font-bold text-[10px]">2</div>
                       <p>Сгенерируйте уникальный QR-код, который содержит зашифрованную ссылку.</p>
                     </div>
-                    <div className="flex gap-3">
-                      <div className="w-6 h-6 rounded-full bg-apple-red/20 flex items-center justify-center shrink-0 text-apple-red font-bold text-xs">3</div>
+                    <div className="flex gap-2">
+                      <div className="w-5 h-5 rounded-full bg-apple-red/20 flex items-center justify-center shrink-0 text-apple-red font-bold text-[10px]">3</div>
                       <p>Распечатайте код и разместите его под лобовым стеклом.</p>
                     </div>
                   </div>
@@ -494,22 +494,22 @@ export default function Home() {
             </AnimatePresence>
           </div>
 
-          <form onSubmit={generateQR} className="space-y-4">
+          <form onSubmit={generateQR} className="space-y-3">
             {/* Car Info */}
-            <div className="space-y-4 border-b border-white/10 pb-4 pt-1">
+            <div className="space-y-3 border-b border-white/10 pb-3 pt-1">
               <button 
                 type="button"
                 onClick={() => toggleSection('car')}
                 className="w-full flex items-center justify-between text-left group focus:outline-none rounded-xl p-1 -ml-1 hover:bg-white/5 transition-colors"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-apple-red/20 flex items-center justify-center">
-                    <Car className="w-5 h-5 text-apple-red" />
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-apple-red/20 flex items-center justify-center">
+                    <Car className="w-4 h-4 text-apple-red" />
                   </div>
-                  <h2 className="text-lg font-bold tracking-tight">Автомобиль</h2>
+                  <h2 className="text-base font-bold tracking-tight">Автомобиль</h2>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
-                  {expandedSections.car ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                  {expandedSections.car ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                 </div>
               </button>
               
@@ -521,9 +521,9 @@ export default function Home() {
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden"
                   >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Марка и модель</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                      <div className="space-y-1.5">
+                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">Марка и модель</label>
                         <motion.div
                           animate={errors.carModel ? { x: [-4, 4, -4, 4, 0] } : {}}
                           transition={{ duration: 0.4 }}
@@ -535,12 +535,12 @@ export default function Home() {
                             value={formData.carModel || ''}
                             onChange={handleInputChange}
                             placeholder="Tesla Model 3"
-                            className={`w-full bg-white/5 border-2 ${errors.carModel ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
+                            className={`w-full bg-white/5 border-2 ${errors.carModel ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-3 py-2 text-sm focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
                           />
                         </motion.div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Госномер</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">Госномер</label>
                         <motion.div
                           animate={errors.plateNumber ? { x: [-4, 4, -4, 4, 0] } : {}}
                           transition={{ duration: 0.4 }}
@@ -552,7 +552,7 @@ export default function Home() {
                             value={formData.plateNumber || ''}
                             onChange={handleInputChange}
                             placeholder="А123ВС 777"
-                            className={`w-full bg-white/5 border-2 ${errors.plateNumber ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all font-mono uppercase tracking-widest outline-none placeholder:text-gray-600`}
+                            className={`w-full bg-white/5 border-2 ${errors.plateNumber ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-3 py-2 text-sm focus:border-apple-red transition-all font-mono uppercase tracking-widest outline-none placeholder:text-gray-600`}
                           />
                         </motion.div>
                       </div>
@@ -563,20 +563,20 @@ export default function Home() {
             </div>
 
             {/* Owner Info */}
-            <div className="space-y-4 border-b border-white/10 pb-4 pt-1">
+            <div className="space-y-3 border-b border-white/10 pb-3 pt-1">
               <button 
                 type="button"
                 onClick={() => toggleSection('owner')}
                 className="w-full flex items-center justify-between text-left group focus:outline-none rounded-xl p-1 -ml-1 hover:bg-white/5 transition-colors"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-apple-red/20 flex items-center justify-center">
-                    <User className="w-5 h-5 text-apple-red" />
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-apple-red/20 flex items-center justify-center">
+                    <User className="w-4 h-4 text-apple-red" />
                   </div>
-                  <h2 className="text-lg font-bold tracking-tight">Владелец</h2>
+                  <h2 className="text-base font-bold tracking-tight">Владелец</h2>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
-                  {expandedSections.owner ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                  {expandedSections.owner ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                 </div>
               </button>
 
@@ -588,9 +588,9 @@ export default function Home() {
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden"
                   >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Ваше имя</label>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                      <div className="space-y-1.5">
+                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">Ваше имя</label>
                         <motion.div
                           animate={errors.ownerName ? { x: [-4, 4, -4, 4, 0] } : {}}
                           transition={{ duration: 0.4 }}
@@ -602,12 +602,12 @@ export default function Home() {
                             value={formData.ownerName || ''}
                             onChange={handleInputChange}
                             placeholder="Иван Иванов"
-                            className={`w-full bg-white/5 border-2 ${errors.ownerName ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
+                            className={`w-full bg-white/5 border-2 ${errors.ownerName ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-3 py-2 text-sm focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
                           />
                         </motion.div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Телефон</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">Телефон</label>
                         <motion.div
                           animate={errors.phone1 ? { x: [-4, 4, -4, 4, 0] } : {}}
                           transition={{ duration: 0.4 }}
@@ -620,7 +620,7 @@ export default function Home() {
                             value={formData.phone1 || ''}
                             onChange={handleInputChange}
                             placeholder="+7 (900) 000-00-00"
-                            className={`w-full bg-white/5 border-2 ${errors.phone1 ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
+                            className={`w-full bg-white/5 border-2 ${errors.phone1 ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-3 py-2 text-sm focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
                           />
                         </motion.div>
                       </div>
@@ -631,20 +631,20 @@ export default function Home() {
             </div>
 
             {/* Socials */}
-            <div className="space-y-4 border-b border-white/10 pb-4 pt-1">
+            <div className="space-y-3 border-b border-white/10 pb-3 pt-1">
               <button 
                 type="button"
                 onClick={() => toggleSection('socials')}
                 className="w-full flex items-center justify-between text-left group focus:outline-none rounded-xl p-1 -ml-1 hover:bg-white/5 transition-colors"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-apple-red/20 flex items-center justify-center">
-                    <Send className="w-5 h-5 text-apple-red" />
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-apple-red/20 flex items-center justify-center">
+                    <Send className="w-4 h-4 text-apple-red" />
                   </div>
-                  <h2 className="text-lg font-bold tracking-tight">Мессенджеры</h2>
+                  <h2 className="text-base font-bold tracking-tight">Мессенджеры</h2>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
-                  {expandedSections.socials ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                  {expandedSections.socials ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                 </div>
               </button>
 
@@ -656,27 +656,27 @@ export default function Home() {
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden"
                   >
-                    <div className="grid grid-cols-1 gap-4 pt-2">
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Telegram</label>
+                    <div className="grid grid-cols-1 gap-3 pt-1">
+                      <div className="space-y-1.5">
+                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">Telegram</label>
                         <input
                           name="telegram"
                           value={formData.telegram || ''}
                           onChange={handleInputChange}
                           placeholder="username"
-                          className="w-full bg-white/5 border-2 border-white/5 hover:border-white/10 rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600"
+                          className="w-full bg-white/5 border-2 border-white/5 hover:border-white/10 rounded-xl px-3 py-2 text-sm focus:border-apple-red transition-all outline-none placeholder:text-gray-600"
                         />
                       </div>
 
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">WhatsApp</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">WhatsApp</label>
                         <input
                           type="tel"
                           name="whatsapp"
                           value={formData.whatsapp || ''}
                           onChange={handleInputChange}
                           placeholder="+7..."
-                          className="w-full bg-white/5 border-2 border-white/5 hover:border-white/10 rounded-xl px-4 py-3 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600"
+                          className="w-full bg-white/5 border-2 border-white/5 hover:border-white/10 rounded-xl px-3 py-2 text-sm focus:border-apple-red transition-all outline-none placeholder:text-gray-600"
                         />
                       </div>
                     </div>
@@ -686,20 +686,20 @@ export default function Home() {
             </div>
 
             {/* Quick Buttons */}
-            <div className="space-y-4 border-b border-white/10 pb-4 pt-1">
+            <div className="space-y-3 border-b border-white/10 pb-3 pt-1">
               <button 
                 type="button"
                 onClick={() => toggleSection('buttons')}
                 className="w-full flex items-center justify-between text-left group focus:outline-none rounded-xl p-1 -ml-1 hover:bg-white/5 transition-colors"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-apple-red/20 flex items-center justify-center">
-                    <AlertTriangle className="w-5 h-5 text-apple-red" />
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-apple-red/20 flex items-center justify-center">
+                    <AlertTriangle className="w-4 h-4 text-apple-red" />
                   </div>
-                  <h2 className="text-lg font-bold tracking-tight">Быстрые кнопки</h2>
+                  <h2 className="text-base font-bold tracking-tight">Быстрые кнопки</h2>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
-                  {expandedSections.buttons ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                  {expandedSections.buttons ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                 </div>
               </button>
 
@@ -711,7 +711,7 @@ export default function Home() {
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden"
                   >
-                    <div className="grid grid-cols-2 gap-3 pt-2">
+                    <div className="grid grid-cols-2 gap-2 pt-1">
                       {BUTTON_OPTIONS.map((btn) => {
                         const isActive = formData.quickButtons.includes(btn.id);
                         return (
@@ -719,14 +719,14 @@ export default function Home() {
                             key={btn.id}
                             type="button"
                             onClick={() => toggleButton(btn.id)}
-                            className={`flex flex-col items-center justify-center min-h-[80px] p-3 rounded-2xl border-2 transition-all active:scale-95 ${
+                            className={`flex flex-col items-center justify-center min-h-[60px] p-2 rounded-xl border-2 transition-all active:scale-95 ${
                               isActive
                                 ? 'bg-apple-red border-transparent text-white red-glow'
                                 : 'bg-white/5 border-white/5 text-gray-500 hover:border-white/10'
                             }`}
                           >
-                            <btn.icon className={`w-6 h-6 mb-1 ${isActive ? 'text-white' : 'text-gray-600'}`} />
-                            <span className="text-[9px] font-black uppercase tracking-widest text-center">
+                            <btn.icon className={`w-4 h-4 mb-1 ${isActive ? 'text-white' : 'text-gray-600'}`} />
+                            <span className="text-[8px] font-black uppercase tracking-widest text-center">
                               {btn.label}
                             </span>
                           </button>
@@ -739,20 +739,20 @@ export default function Home() {
             </div>
 
             {/* Design Customization */}
-            <div className="space-y-4 border-b border-white/10 pb-4 pt-1">
+            <div className="space-y-3 border-b border-white/10 pb-3 pt-1">
               <button 
                 type="button"
                 onClick={() => toggleSection('design')}
                 className="w-full flex items-center justify-between text-left group focus:outline-none rounded-xl p-1 -ml-1 hover:bg-white/5 transition-colors"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-apple-red/20 flex items-center justify-center">
-                    <Palette className="w-5 h-5 text-apple-red" />
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-apple-red/20 flex items-center justify-center">
+                    <Palette className="w-4 h-4 text-apple-red" />
                   </div>
-                  <h2 className="text-lg font-bold tracking-tight">Дизайн</h2>
+                  <h2 className="text-base font-bold tracking-tight">Дизайн</h2>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
-                  {expandedSections.design ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all">
+                  {expandedSections.design ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                 </div>
               </button>
 
@@ -764,36 +764,36 @@ export default function Home() {
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden"
                   >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Основной цвет</label>
-                        <div className="flex gap-3 items-center">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                      <div className="space-y-1.5">
+                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">Основной цвет</label>
+                        <div className="flex gap-2 items-center">
                           <input
                             type="color"
                             name="themeColor"
                             value={formData.themeColor}
                             onChange={handleInputChange}
-                            className="w-10 h-10 rounded-lg cursor-pointer bg-transparent border-2 border-white/10"
+                            className="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-2 border-white/10"
                           />
                           <input
                             type="text"
                             name="themeColor"
                             value={formData.themeColor}
                             onChange={handleInputChange}
-                            className="flex-1 bg-white/5 border-2 border-white/5 rounded-xl px-3 py-2 text-xs font-mono text-gray-500"
+                            className="flex-1 bg-white/5 border-2 border-white/5 rounded-xl px-2 py-1.5 text-[10px] font-mono text-gray-500"
                           />
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Текст рядом с QR</label>
+                      <div className="space-y-1.5">
+                        <label className="text-[9px] font-bold text-gray-400 uppercase tracking-widest ml-1">Текст рядом с QR</label>
                         <div className="relative">
-                          <Type className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
+                          <Type className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-600" />
                           <input
                             name="qrText"
                             value={formData.qrText || ''}
                             onChange={handleInputChange}
                             placeholder="Сканируй меня!"
-                            className="w-full bg-white/5 border-2 border-white/5 rounded-xl pl-10 pr-4 py-3 text-base focus:border-apple-red outline-none transition-all placeholder:text-gray-600"
+                            className="w-full bg-white/5 border-2 border-white/5 rounded-xl pl-8 pr-3 py-2 text-sm focus:border-apple-red outline-none transition-all placeholder:text-gray-600"
                           />
                         </div>
                       </div>
@@ -806,7 +806,7 @@ export default function Home() {
             <button
               type="submit"
               disabled={isGenerating}
-              className={`w-full py-4 px-8 rounded-xl font-bold text-base uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl ${
+              className={`w-full py-3 px-6 rounded-xl font-bold text-sm uppercase tracking-widest transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-xl ${
                 isSuccess 
                   ? 'bg-green-500 text-white' 
                   : 'red-gradient text-white red-glow hover:brightness-110'
@@ -814,17 +814,17 @@ export default function Home() {
             >
               {isGenerating ? (
                 <>
-                  <Loader2 className="w-6 h-6 animate-spin" />
+                  <Loader2 className="w-5 h-5 animate-spin" />
                   Создаем...
                 </>
               ) : isSuccess ? (
                 <>
-                  <Check className="w-6 h-6" />
+                  <Check className="w-5 h-5" />
                   Готово!
                 </>
               ) : (
                 <>
-                  <QrCode className="w-6 h-6" />
+                  <QrCode className="w-5 h-5" />
                   Создать QR-код
                 </>
               )}

@@ -17,10 +17,12 @@ import {
   User,
   Zap,
   ChevronDown,
-  Plus
+  Plus,
+  ArrowLeft
 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { motion, AnimatePresence } from 'motion/react';
+import Link from 'next/link';
 
 const BUTTON_CONFIG: Record<string, { label: string, icon: any, color: string }> = {
   evacuation: { label: 'Эвакуация', icon: AlertTriangle, color: 'bg-orange-500' },
@@ -141,26 +143,37 @@ export default function PublicCardView() {
       </div>
 
       {/* Hero Section */}
-      <div className="relative pt-16 pb-24 px-6 overflow-hidden">
+      <div className="relative pt-6 pb-12 px-5 overflow-hidden">
         <div className="absolute inset-0 red-gradient opacity-20 blur-3xl -z-10 transform scale-150"></div>
         
         <div className="max-w-md mx-auto relative z-10">
-          <div className="flex justify-between items-start mb-10">
-            <div className="w-16 h-16 glass-panel rounded-2xl flex items-center justify-center border border-white/10 shadow-xl">
-              <Car className="w-8 h-8 text-apple-red" />
+          <div className="flex justify-between items-start mb-6">
+            <div className="flex gap-2.5">
+              <Link 
+                href="/cabinet"
+                className="w-9 h-9 glass-panel rounded-xl flex items-center justify-center border border-white/10 hover:bg-white/5 transition-all shadow-xl"
+                title="В профиль"
+              >
+                <ArrowLeft className="w-4 h-4 text-gray-400" />
+              </Link>
+              <div className="w-9 h-9 glass-panel rounded-xl flex items-center justify-center border border-white/10 shadow-xl">
+                <Car className="w-4 h-4 text-apple-red" />
+              </div>
             </div>
-            <div className="w-12 h-12 glass-panel rounded-2xl flex items-center justify-center border border-white/10 hover:bg-white/5 transition-all shadow-xl"
+            <button 
+              onClick={() => setShowQR(true)}
+              className="w-9 h-9 glass-panel rounded-xl flex items-center justify-center border border-white/10 hover:bg-white/5 transition-all shadow-xl"
             >
-              <QrCode className="w-6 h-6 text-gray-400" />
-            </div>
+              <QrCode className="w-4 h-4 text-gray-400" />
+            </button>
           </div>
           
-          <div className="space-y-4">
-            <h1 className="text-4xl font-black tracking-tight leading-tight">
+          <div className="space-y-2">
+            <h1 className="text-2xl font-black tracking-tight leading-tight">
               {card.carModel}
             </h1>
-            <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl shadow-2xl transform -rotate-1 border border-white/10">
-              <span className="text-2xl font-black tracking-widest text-white uppercase font-mono">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl shadow-2xl transform -rotate-1 border border-white/10">
+              <span className="text-lg font-black tracking-widest text-white uppercase font-mono">
                 {card.plateNumber}
               </span>
             </div>
@@ -168,21 +181,21 @@ export default function PublicCardView() {
         </div>
       </div>
 
-      <main className="max-w-md mx-auto px-6 -mt-12 space-y-8 relative z-20">
+      <main className="max-w-md mx-auto px-5 -mt-6 space-y-5 relative z-20">
         {/* Share Section */}
-        <section className="glass-card p-6 space-y-4">
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] text-center">Поделиться этой визиткой</p>
-          <div className="flex justify-center gap-4">
+        <section className="glass-card p-4 space-y-2.5">
+          <p className="text-[8px] font-bold text-gray-400 uppercase tracking-[0.2em] text-center">Поделиться визиткой</p>
+          <div className="flex justify-center gap-2.5">
             <button
               onClick={() => {
                 const text = encodeURIComponent(`Визитка авто: ${card.carModel} (${card.plateNumber})`);
                 const url = encodeURIComponent(window.location.href);
                 window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
               }}
-              className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center border border-blue-500/30 hover:bg-blue-500/30 transition-all"
+              className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center border border-blue-500/30 hover:bg-blue-500/30 transition-all"
               title="Telegram"
             >
-              <Send className="w-5 h-5 text-blue-400" />
+              <Send className="w-4 h-4 text-blue-400" />
             </button>
             <button
               onClick={() => {
@@ -190,20 +203,20 @@ export default function PublicCardView() {
                 const url = encodeURIComponent(window.location.href);
                 window.open(`https://wa.me/?text=${text}${url}`, '_blank');
               }}
-              className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center border border-green-500/30 hover:bg-green-500/30 transition-all"
+              className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center border border-green-500/30 hover:bg-green-500/30 transition-all"
               title="WhatsApp"
             >
-              <MessageSquare className="w-5 h-5 text-green-400" />
+              <MessageSquare className="w-4 h-4 text-green-400" />
             </button>
             <button
               onClick={() => {
                 const url = encodeURIComponent(window.location.href);
                 window.open(`https://vk.com/share.php?url=${url}`, '_blank');
               }}
-              className="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30 hover:bg-indigo-500/30 transition-all"
+              className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30 hover:bg-indigo-500/30 transition-all"
               title="VK"
             >
-              <span className="font-bold text-indigo-400 text-sm">VK</span>
+              <span className="font-bold text-indigo-400 text-xs">VK</span>
             </button>
             <button
               onClick={() => {
@@ -218,17 +231,17 @@ export default function PublicCardView() {
                   alert('Ссылка скопирована');
                 }
               }}
-              className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all"
+              className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all"
               title="Другое"
             >
-              <Plus className="w-5 h-5 text-gray-500" />
+              <Plus className="w-4 h-4 text-gray-500" />
             </button>
           </div>
         </section>
 
         {/* Quick Actions */}
         {card.quickButtons.length > 0 && (
-          <section className="grid grid-cols-2 gap-4">
+          <section className="grid grid-cols-2 gap-2.5">
             {card.quickButtons.map((btnId) => {
               const config = BUTTON_CONFIG[btnId];
               if (!config) return null;
@@ -241,16 +254,16 @@ export default function PublicCardView() {
                   whileTap={{ scale: 0.95 }}
                   onClick={() => sendAlert(btnId)}
                   disabled={!!alertSent}
-                  className={`relative overflow-hidden flex flex-col items-center justify-center min-h-[120px] p-6 rounded-[2.5rem] transition-all border shadow-2xl ${
+                  className={`relative overflow-hidden flex flex-col items-center justify-center min-h-[90px] p-3 rounded-[1.5rem] transition-all border shadow-2xl ${
                     isSent 
                       ? 'bg-green-500/20 border-green-500/50 text-green-500' 
                       : 'glass-panel border-white/10 text-white hover:bg-white/5'
                   }`}
                 >
-                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-3 ${isSent ? 'bg-green-500/20' : 'bg-apple-red/10'}`}>
-                    <Icon className={`w-6 h-6 ${isSent ? 'text-green-500 animate-pulse' : 'text-apple-red'}`} />
+                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center mb-1.5 ${isSent ? 'bg-green-500/20' : 'bg-apple-red/10'}`}>
+                    <Icon className={`w-4 h-4 ${isSent ? 'text-green-500 animate-pulse' : 'text-apple-red'}`} />
                   </div>
-                  <span className="font-bold text-[10px] uppercase tracking-widest text-center text-gray-500">
+                  <span className="font-bold text-[8px] uppercase tracking-widest text-center text-gray-500">
                     {isSent ? 'Отправлено!' : config.label}
                   </span>
                 </motion.button>
@@ -261,89 +274,89 @@ export default function PublicCardView() {
 
         {/* Contact Info */}
         {card.showContact && (
-          <section className="glass-card p-8 space-y-8">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-apple-red/20 flex items-center justify-center">
-                <User className="w-4 h-4 text-apple-red" />
+          <section className="glass-card p-5 space-y-5">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-lg bg-apple-red/20 flex items-center justify-center">
+                <User className="w-3 h-3 text-apple-red" />
               </div>
-              <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400">
+              <h3 className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
                 Владелец авто
               </h3>
             </div>
             
-            <div className="space-y-8">
-              <div className="flex items-center gap-5">
-                <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 shadow-inner">
-                  <User className="w-7 h-7 text-gray-400" />
+            <div className="space-y-5">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 shadow-inner">
+                  <User className="w-5 h-5 text-gray-400" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold tracking-tight">{card.ownerName}</p>
+                  <p className="text-lg font-bold tracking-tight">{card.ownerName}</p>
                   {card.telegram && (
-                    <p className="text-sm font-medium text-apple-red mt-1">
+                    <p className="text-[10px] font-medium text-apple-red mt-0">
                       {card.telegram}
                     </p>
                   )}
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <a href={`tel:${card.phone1}`} className="flex items-center justify-between group p-4 -m-4 rounded-3xl hover:bg-white/5 transition-all">
-                  <div className="flex items-center gap-5">
-                    <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
-                      <Phone className="w-6 h-6 text-gray-400 group-hover:text-gray-300" />
+              <div className="space-y-2.5">
+                <a href={`tel:${card.phone1}`} className="flex items-center justify-between group p-2.5 -m-2.5 rounded-2xl hover:bg-white/5 transition-all">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
+                      <Phone className="w-4 h-4 text-gray-400 group-hover:text-gray-300" />
                     </div>
                     <div>
-                      <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Телефон</p>
-                      <p className="font-bold text-lg tracking-tight">{card.phone1}</p>
+                      <p className="text-[8px] uppercase font-bold tracking-widest text-gray-500">Телефон</p>
+                      <p className="font-bold text-sm tracking-tight">{card.phone1}</p>
                     </div>
                   </div>
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-apple-red/20 transition-all">
-                    <Phone className="w-4 h-4 text-gray-400 group-hover:text-apple-red" />
+                  <div className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-apple-red/20 transition-all">
+                    <Phone className="w-3 h-3 text-gray-400 group-hover:text-apple-red" />
                   </div>
                 </a>
 
                 {card.telegram && (
-                  <a href={`https://t.me/${card.telegram.replace('@', '')}`} target="_blank" className="flex items-center justify-between group p-4 -m-4 rounded-3xl hover:bg-white/5 transition-all">
-                    <div className="flex items-center gap-5">
-                      <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
-                        <Send className="w-6 h-6 text-gray-400 group-hover:text-gray-300" />
+                  <a href={`https://t.me/${card.telegram.replace('@', '')}`} target="_blank" className="flex items-center justify-between group p-2.5 -m-2.5 rounded-2xl hover:bg-white/5 transition-all">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
+                        <Send className="w-4 h-4 text-gray-400 group-hover:text-gray-300" />
                       </div>
                       <div>
-                        <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Telegram</p>
-                        <p className="font-bold text-lg tracking-tight">{card.telegram}</p>
+                        <p className="text-[8px] uppercase font-bold tracking-widest text-gray-500">Telegram</p>
+                        <p className="font-bold text-sm tracking-tight">{card.telegram}</p>
                       </div>
                     </div>
-                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-apple-red/20 transition-all">
-                      <Send className="w-4 h-4 text-gray-400 group-hover:text-apple-red" />
+                    <div className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-apple-red/20 transition-all">
+                      <Send className="w-3 h-3 text-gray-400 group-hover:text-apple-red" />
                     </div>
                   </a>
                 )}
 
                 {card.whatsapp && (
-                  <a href={`https://wa.me/${card.whatsapp.replace(/[^0-9]/g, '')}`} target="_blank" className="flex items-center justify-between group p-4 -m-4 rounded-3xl hover:bg-white/5 transition-all">
-                    <div className="flex items-center gap-5">
-                      <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
-                        <MessageSquare className="w-6 h-6 text-gray-400 group-hover:text-gray-300" />
+                  <a href={`https://wa.me/${card.whatsapp.replace(/[^0-9]/g, '')}`} target="_blank" className="flex items-center justify-between group p-2.5 -m-2.5 rounded-2xl hover:bg-white/5 transition-all">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
+                        <MessageSquare className="w-4 h-4 text-gray-400 group-hover:text-gray-300" />
                       </div>
                       <div>
-                        <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">WhatsApp</p>
-                        <p className="font-bold text-lg tracking-tight">{card.whatsapp}</p>
+                        <p className="text-[8px] uppercase font-bold tracking-widest text-gray-500">WhatsApp</p>
+                        <p className="font-bold text-sm tracking-tight">{card.whatsapp}</p>
                       </div>
                     </div>
-                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-apple-red/20 transition-all">
-                      <MessageSquare className="w-4 h-4 text-gray-400 group-hover:text-apple-red" />
+                    <div className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-apple-red/20 transition-all">
+                      <MessageSquare className="w-3 h-3 text-gray-400 group-hover:text-apple-red" />
                     </div>
                   </a>
                 )}
 
                 {card.max && (
-                  <div className="flex items-center gap-5 p-4 -m-4 rounded-3xl">
-                    <div className="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10">
-                      <Zap className="w-6 h-6 text-gray-400" />
+                  <div className="flex items-center gap-3 p-2.5 -m-2.5 rounded-2xl">
+                    <div className="w-9 h-9 bg-white/5 rounded-xl flex items-center justify-center border border-white/10">
+                      <Zap className="w-4 h-4 text-gray-400" />
                     </div>
                     <div>
-                      <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Max</p>
-                      <p className="font-bold text-lg tracking-tight">{card.max}</p>
+                      <p className="text-[8px] uppercase font-bold tracking-widest text-gray-500">Max</p>
+                      <p className="font-bold text-sm tracking-tight">{card.max}</p>
                     </div>
                   </div>
                 )}
@@ -353,13 +366,13 @@ export default function PublicCardView() {
         )}
 
         {/* Primary Contact Buttons */}
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 gap-2.5">
           {card.phone1 && (
             <a 
               href={`tel:${card.phone1}`}
-              className="flex items-center justify-center gap-3 text-white py-6 rounded-[2rem] font-bold text-xl red-gradient shadow-2xl red-glow hover:brightness-110 transition-all active:scale-95"
+              className="flex items-center justify-center gap-2 text-white py-4 rounded-[1.25rem] font-bold text-base red-gradient shadow-2xl red-glow hover:brightness-110 transition-all active:scale-95"
             >
-              <Phone className="w-6 h-6" />
+              <Phone className="w-4 h-4" />
               Позвонить
             </a>
           )}
@@ -367,42 +380,42 @@ export default function PublicCardView() {
             <a 
               href={`https://t.me/${card.telegram.replace('@', '')}`}
               target="_blank"
-              className="flex items-center justify-center gap-3 bg-white/5 text-white py-6 rounded-[2rem] font-bold text-xl border border-white/10 hover:bg-white/10 transition-all active:scale-95"
+              className="flex items-center justify-center gap-2 bg-white/5 text-white py-4 rounded-[1.25rem] font-bold text-base border border-white/10 hover:bg-white/10 transition-all active:scale-95"
             >
-              <Send className="w-6 h-6" />
+              <Send className="w-4 h-4" />
               Написать в Telegram
             </a>
           )}
         </div>
       </main>
 
-      <footer className="mt-20 mb-12 text-center space-y-8 px-6">
-        <div className="flex flex-col items-center gap-6">
-          <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em]">Разработка и поддержка</p>
-          <div className="flex items-center gap-8">
+      <footer className="mt-8 mb-6 text-center space-y-5 px-5">
+        <div className="flex flex-col items-center gap-3">
+          <p className="text-[8px] font-bold text-gray-500 uppercase tracking-[0.3em]">Разработка и поддержка</p>
+          <div className="flex items-center gap-5">
             <a 
               href="https://t.me/krisdev13" 
               target="_blank" 
-              className="group flex flex-col items-center gap-2"
+              className="group flex flex-col items-center gap-1"
             >
-              <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-apple-red/20 group-hover:border-apple-red/30 transition-all">
-                <Send className="w-5 h-5 text-gray-400 group-hover:text-apple-red" />
+              <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-apple-red/20 group-hover:border-apple-red/30 transition-all">
+                <Send className="w-3.5 h-3.5 text-gray-400 group-hover:text-apple-red" />
               </div>
-              <span className="text-[10px] font-bold text-gray-500 group-hover:text-gray-400 transition-colors">@krisdev13</span>
+              <span className="text-[8px] font-bold text-gray-500 group-hover:text-gray-400 transition-colors">@krisdev13</span>
             </a>
             <a 
               href="mailto:info@premiumwebsite.ru" 
-              className="group flex flex-col items-center gap-2"
+              className="group flex flex-col items-center gap-1"
             >
-              <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-apple-red/20 group-hover:border-apple-red/30 transition-all">
-                <Mail className="w-5 h-5 text-gray-400 group-hover:text-apple-red" />
+              <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-apple-red/20 group-hover:border-apple-red/30 transition-all">
+                <Mail className="w-3.5 h-3.5 text-gray-400 group-hover:text-apple-red" />
               </div>
-              <span className="text-[10px] font-bold text-gray-500 group-hover:text-gray-400 transition-colors">Email</span>
+              <span className="text-[8px] font-bold text-gray-500 group-hover:text-gray-400 transition-colors">Email</span>
             </a>
           </div>
         </div>
-        <div className="pt-8 border-t border-white/10">
-          <p className="text-[10px] text-gray-600 font-bold uppercase tracking-widest">© 2026 CarQR. Все права защищены.</p>
+        <div className="pt-4 border-t border-white/10">
+          <p className="text-[8px] text-gray-600 font-bold uppercase tracking-widest">© 2026 CarQR. Все права защищены.</p>
         </div>
       </footer>
 

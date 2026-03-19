@@ -39,74 +39,74 @@ export default function CabinetPage() {
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-apple-red selection:text-white p-4 md:p-8">
-      <div className="max-w-2xl mx-auto space-y-8">
+    <div className="min-h-screen bg-black text-white selection:bg-apple-red selection:text-white p-3 md:p-4">
+      <div className="max-w-2xl mx-auto space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between">
           <Link 
             href="/" 
-            className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-all"
+            className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-all"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-3.5 h-3.5" />
           </Link>
-          <h1 className="text-xl font-bold tracking-tight">Личный кабинет</h1>
-          <div className="w-10 h-10 rounded-full bg-apple-red/10 flex items-center justify-center border border-apple-red/20">
-            <User className="w-5 h-5 text-apple-red" />
+          <h1 className="text-base font-bold tracking-tight">Личный кабинет</h1>
+          <div className="w-8 h-8 rounded-full bg-apple-red/10 flex items-center justify-center border border-apple-red/20">
+            <User className="w-3.5 h-3.5 text-apple-red" />
           </div>
         </div>
 
         {/* Profile Summary Card */}
-        <div className="glass-card p-6 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-apple-red/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
-          <div className="relative z-10 flex items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-              <ShieldCheck className="w-8 h-8 text-apple-red" />
+        <div className="glass-card p-4 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-20 h-20 bg-apple-red/10 rounded-full -mr-10 -mt-10 blur-3xl"></div>
+          <div className="relative z-10 flex items-center gap-2.5">
+            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+              <ShieldCheck className="w-5 h-5 text-apple-red" />
             </div>
             <div>
-              <h2 className="text-lg font-bold">Ваш профиль</h2>
-              <p className="text-gray-500 text-xs">Локальное хранилище данных</p>
-              <div className="mt-2 inline-flex items-center gap-2 px-2 py-1 bg-apple-red/10 rounded-lg border border-apple-red/20">
-                <span className="w-2 h-2 rounded-full bg-apple-red animate-pulse"></span>
-                <span className="text-[10px] font-bold text-apple-red uppercase tracking-widest">Активен</span>
+              <h2 className="text-sm font-bold">Ваш профиль</h2>
+              <p className="text-gray-500 text-[9px]">Локальное хранилище данных</p>
+              <div className="mt-0.5 inline-flex items-center gap-1 px-1.5 py-0.5 bg-apple-red/10 rounded-lg border border-apple-red/20">
+                <span className="w-1 h-1 rounded-full bg-apple-red animate-pulse"></span>
+                <span className="text-[8px] font-bold text-apple-red uppercase tracking-widest">Активен</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="glass-panel p-4 flex flex-col items-center justify-center gap-1 text-center">
-            <span className="text-2xl font-bold">{savedCards.length}</span>
-            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Визиток</span>
+        <div className="grid grid-cols-2 gap-2.5">
+          <div className="glass-panel p-2.5 flex flex-col items-center justify-center gap-0 text-center">
+            <span className="text-lg font-bold">{savedCards.length}</span>
+            <span className="text-[8px] font-bold text-gray-500 uppercase tracking-widest">Визиток</span>
           </div>
-          <div className="glass-panel p-4 flex flex-col items-center justify-center gap-1 text-center">
-            <span className="text-2xl font-bold">0</span>
-            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Уведомлений</span>
+          <div className="glass-panel p-2.5 flex flex-col items-center justify-center gap-0 text-center">
+            <span className="text-lg font-bold">0</span>
+            <span className="text-[8px] font-bold text-gray-500 uppercase tracking-widest">Уведомлений</span>
           </div>
         </div>
 
         {/* Cards List */}
-        <div className="space-y-4">
+        <div className="space-y-2.5">
           <div className="flex items-center justify-between px-1">
-            <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest">Ваши визитки</h3>
-            <span className="text-[10px] text-gray-600">Только просмотр</span>
+            <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Ваши визитки</h3>
+            <span className="text-[8px] text-gray-600">Только просмотр</span>
           </div>
 
           {savedCards.length === 0 ? (
-            <div className="glass-panel p-12 text-center space-y-4">
-              <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto opacity-20">
-                <CreditCard className="w-8 h-8" />
+            <div className="glass-panel p-6 text-center space-y-2.5">
+              <div className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center mx-auto opacity-20">
+                <CreditCard className="w-5 h-5" />
               </div>
-              <p className="text-gray-500 text-sm">У вас пока нет сохраненных визиток</p>
+              <p className="text-gray-500 text-[10px]">У вас пока нет сохраненных визиток</p>
               <Link 
                 href="/" 
-                className="inline-block px-6 py-2 bg-apple-red rounded-xl text-xs font-bold hover:scale-105 transition-all"
+                className="inline-block px-4 py-1.5 bg-apple-red rounded-xl text-[9px] font-bold hover:scale-105 transition-all"
               >
                 Создать первую
               </Link>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-1.5">
               {savedCards.map((card, idx) => (
                 <motion.div
                   key={idx}
@@ -114,18 +114,18 @@ export default function CabinetPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.1 }}
                   onClick={() => setSelectedCard(card)}
-                  className="glass-panel p-4 flex items-center justify-between group cursor-pointer hover:bg-white/5 transition-all"
+                  className="glass-panel p-2.5 flex items-center justify-between group cursor-pointer hover:bg-white/5 transition-all"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-apple-red/30 transition-all">
-                      <Car className="w-5 h-5 text-gray-400 group-hover:text-apple-red transition-all" />
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-apple-red/30 transition-all">
+                      <Car className="w-3.5 h-3.5 text-gray-400 group-hover:text-apple-red transition-all" />
                     </div>
                     <div>
-                      <div className="font-bold text-sm">{card.carModel}</div>
-                      <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">{card.plateNumber}</div>
+                      <div className="font-bold text-[11px]">{card.carModel}</div>
+                      <div className="text-[8px] font-mono text-gray-500 uppercase tracking-widest">{card.plateNumber}</div>
                     </div>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-white transition-all" />
+                  <ChevronRight className="w-3 h-3 text-gray-600 group-hover:text-white transition-all" />
                 </motion.div>
               ))}
             </div>
@@ -226,8 +226,8 @@ export default function CabinetPage() {
         </AnimatePresence>
 
         {/* Footer Info */}
-        <div className="text-center pt-8">
-          <p className="text-[10px] text-gray-600 uppercase tracking-[0.2em] font-bold">
+        <div className="text-center pt-4">
+          <p className="text-[9px] text-gray-600 uppercase tracking-[0.2em] font-bold">
             CarQR Personal Cabinet • Secure & Private
           </p>
         </div>
