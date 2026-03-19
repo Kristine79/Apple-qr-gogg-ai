@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { decodeCardData, type CarCardData } from '@/lib/utils';
+import Image from 'next/image';
 import { 
   Car, 
   Phone, 
@@ -157,9 +158,15 @@ export default function PublicCardView() {
               >
                 <ArrowLeft className="w-4 h-4 text-gray-400" />
               </Link>
-              <div className="w-9 h-9 glass-panel rounded-xl flex items-center justify-center border border-white/10 shadow-xl">
-                <Car className="w-4 h-4 text-apple-red" />
-              </div>
+              <Link href="/" className="w-9 h-9 relative rounded-xl overflow-hidden border border-white/10 shadow-xl hover:opacity-80 transition-opacity">
+                <Image 
+                  src="/logo.png" 
+                  alt="Logo" 
+                  fill 
+                  className="object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              </Link>
             </div>
             <button 
               onClick={() => setShowQR(true)}
@@ -451,7 +458,7 @@ export default function PublicCardView() {
                     level="Q"
                     includeMargin={true}
                     imageSettings={{
-                      src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff3b30'%3E%3Cpath d='M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z'/%3E%3C/svg%3E",
+                      src: "/logo.png",
                       x: undefined,
                       y: undefined,
                       height: 48,

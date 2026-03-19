@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { 
   Car, 
   User, 
@@ -46,12 +47,18 @@ export default function CabinetPage() {
       <div className="max-w-2xl mx-auto space-y-4">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <button 
-            onClick={() => window.location.href = '/'}
-            className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-all active:scale-90"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-          </button>
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <div className="w-8 h-8 relative rounded-lg overflow-hidden border border-white/10 shadow-lg">
+              <Image 
+                src="/logo.png" 
+                alt="Logo" 
+                fill 
+                className="object-cover"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            <span className="font-bold text-lg tracking-tight">CarQR</span>
+          </Link>
           <h1 className="text-base font-bold tracking-tight">Личный кабинет</h1>
           <div className="w-8 h-8 rounded-full bg-apple-red/10 flex items-center justify-center border border-apple-red/20">
             <User className="w-3.5 h-3.5 text-apple-red" />
@@ -176,7 +183,7 @@ export default function CabinetPage() {
                           level="Q"
                           includeMargin={true}
                           imageSettings={{
-                            src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff3b30'%3E%3Cpath d='M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z'/%3E%3C/svg%3E",
+                            src: "/logo.png",
                             x: undefined,
                             y: undefined,
                             height: 32,

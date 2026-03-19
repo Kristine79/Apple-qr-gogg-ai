@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { Car, QrCode, Download, Send, Phone, User, Mail, MessageSquare, AlertTriangle, ShieldAlert, Info, ChevronDown, ChevronUp, Check, Loader2, HelpCircle, Palette, Image as ImageIcon, Type, Plus, Trash2, BarChart3, DownloadCloud } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import Link from 'next/link';
@@ -18,6 +20,7 @@ const STORAGE_KEY = 'carqr_draft';
 const SAVED_CARDS_KEY = 'carqr_saved_cards';
 
 export default function Home() {
+  const router = useRouter();
   const [formData, setFormData] = useState<CarCardData>({
     carModel: '',
     plateNumber: '',
@@ -112,17 +115,12 @@ export default function Home() {
     }
   }, [formData, mounted]);
 
-  const [isSaved, setIsSaved] = useState(false);
-
   const saveCardToProfile = () => {
     const newSaved = [...savedCards, { ...formData }];
     setSavedCards(newSaved);
     localStorage.setItem(SAVED_CARDS_KEY, JSON.stringify(newSaved));
     triggerVibration(50);
-    setIsSaved(true);
-    setTimeout(() => {
-      window.location.href = '/cabinet';
-    }, 800);
+    router.push('/cabinet');
   };
 
   const validateField = useCallback((name: string, value: string) => {
@@ -367,12 +365,18 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black text-white selection:bg-apple-red selection:text-white transition-colors duration-300" suppressHydrationWarning>
       <header className="glass-panel sticky top-0 z-50 mx-2 mt-2 px-4 h-14 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 red-gradient rounded-lg flex items-center justify-center shadow-lg red-glow">
-            <Car className="w-5 h-5 text-white" />
+        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <div className="w-9 h-9 relative rounded-lg overflow-hidden shadow-lg border border-white/10">
+            <Image 
+              src="/logo.png" 
+              alt="CarQR Logo" 
+              fill 
+              className="object-cover"
+              referrerPolicy="no-referrer"
+            />
           </div>
           <span className="font-bold text-xl tracking-tight">CarQR</span>
-        </div>
+        </Link>
         <div className="flex items-center gap-2">
           <Link
             href="/cabinet"
@@ -444,9 +448,15 @@ export default function Home() {
         <div className="glass-card p-4 md:p-5 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-apple-red/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
           
-          <div className="flex flex-col items-center text-center gap-1.5 mb-5 relative z-10">
-            <div className="w-10 h-10 bg-white/10 backdrop-blur-2xl rounded-xl flex items-center justify-center border border-white/20 shadow-2xl">
-              <QrCode className="w-5 h-5 text-apple-red" />
+                  <div className="flex flex-col items-center text-center gap-1.5 mb-5 relative z-10">
+            <div className="w-12 h-12 relative rounded-xl overflow-hidden border border-white/20 shadow-2xl">
+              <Image 
+                src="/logo.png" 
+                alt="Logo" 
+                fill 
+                className="object-cover"
+                referrerPolicy="no-referrer"
+              />
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight">Создать визитку</h1>
@@ -934,7 +944,7 @@ export default function Home() {
                     level="Q"
                     includeMargin={true}
                     imageSettings={{
-                      src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff3b30'%3E%3Cpath d='M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z'/%3E%3C/svg%3E",
+                      src: "/logo.png",
                       x: undefined,
                       y: undefined,
                       height: 48,
@@ -957,17 +967,10 @@ export default function Home() {
                   
                   <button
                     onClick={saveCardToProfile}
-                    disabled={isSaved}
-                    className={`py-4 px-4 rounded-2xl font-bold flex flex-col items-center justify-center gap-2 border transition-all ${
-                      isSaved 
-                        ? 'bg-green-500/20 border-green-500/30 text-green-500' 
-                        : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
-                    }`}
+                    className="py-4 px-4 rounded-2xl font-bold flex flex-col items-center justify-center gap-2 border bg-white/5 border-white/10 text-white hover:bg-white/10 transition-all"
                   >
-                    {isSaved ? <Check className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
-                    <span className="text-[10px] uppercase tracking-widest">
-                      {isSaved ? 'Сохранено' : 'В профиль'}
-                    </span>
+                    <Plus className="w-5 h-5" />
+                    <span className="text-[10px] uppercase tracking-widest">В профиль</span>
                   </button>
                 </div>
 
