@@ -53,7 +53,7 @@ export default function CabinetPage() {
                 src="/logo.png" 
                 alt="Logo" 
                 fill 
-                sizes="42px"
+                sizes="32px"
                 className="object-cover"
                 referrerPolicy="no-referrer"
               />
