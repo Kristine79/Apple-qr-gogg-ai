@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import GlobalErrorDisplay from '@/components/GlobalErrorDisplay';
+import { Analytics } from '@vercel/analytics/next';
 
 const inter = Inter({ 
   subsets: ['latin', 'cyrillic'],
@@ -78,6 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ErrorBoundary>
           {children}
         </ErrorBoundary>
+        <Analytics />
       </body>
     </html>
   );
