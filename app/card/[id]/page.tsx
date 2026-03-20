@@ -190,63 +190,6 @@ export default function PublicCardView() {
       </div>
 
       <main className="max-w-md mx-auto px-5 -mt-6 space-y-5 relative z-20">
-        {/* Share Section */}
-        <section className="glass-card p-4 space-y-2.5">
-          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] text-center">Поделиться визиткой</p>
-          <div className="flex justify-center gap-2.5">
-            <button
-              onClick={() => {
-                const text = encodeURIComponent(`Визитка авто: ${card.carModel} (${card.plateNumber})`);
-                const url = encodeURIComponent(window.location.href);
-                window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
-              }}
-              className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center border border-blue-500/30 hover:bg-blue-500/30 transition-all"
-              title="Telegram"
-            >
-              <Send className="w-4 h-4 text-blue-400" />
-            </button>
-            <button
-              onClick={() => {
-                const text = encodeURIComponent(`Визитка авто: ${card.carModel} (${card.plateNumber}) - `);
-                const url = encodeURIComponent(window.location.href);
-                window.open(`https://wa.me/?text=${text}${url}`, '_blank');
-              }}
-              className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center border border-green-500/30 hover:bg-green-500/30 transition-all"
-              title="WhatsApp"
-            >
-              <MessageSquare className="w-4 h-4 text-green-400" />
-            </button>
-            <button
-              onClick={() => {
-                const url = encodeURIComponent(window.location.href);
-                window.open(`https://vk.com/share.php?url=${url}`, '_blank');
-              }}
-              className="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30 hover:bg-indigo-500/30 transition-all"
-              title="VK"
-            >
-              <span className="font-bold text-indigo-400 text-sm">VK</span>
-            </button>
-            <button
-              onClick={() => {
-                if (navigator.share) {
-                  navigator.share({
-                    title: `Визитка авто: ${card.carModel}`,
-                    text: `Свяжитесь с владельцем авто ${card.plateNumber}`,
-                    url: window.location.href,
-                  }).catch(console.error);
-                } else {
-                  navigator.clipboard.writeText(window.location.href);
-                  alert('Ссылка скопирована');
-                }
-              }}
-              className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all"
-              title="Другое"
-            >
-              <Plus className="w-4 h-4 text-gray-500" />
-            </button>
-          </div>
-        </section>
-
         {/* Quick Actions */}
         {card.quickButtons.length > 0 && (
           <section className="grid grid-cols-2 gap-2.5">
@@ -292,78 +235,54 @@ export default function PublicCardView() {
               </h3>
             </div>
             
-            <div className="space-y-5">
-              <div className="flex items-center gap-3">
+            <div className="space-y-2.5">
+              <div className="flex items-center gap-3 p-2.5 -m-2.5">
                 <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 shadow-inner">
-                  <User className="w-5 h-5 text-gray-400" />
+                  <User className="w-5 h-5 text-apple-red" />
                 </div>
                 <div>
-                  <p className="text-lg font-bold tracking-tight">{card.ownerName}</p>
-                  {card.telegram && (
-                    <p className="text-xs font-medium text-apple-red mt-0">
-                      {card.telegram}
-                    </p>
-                  )}
+                  <p className="font-bold text-lg tracking-tight">{card.ownerName}</p>
                 </div>
               </div>
 
               <div className="space-y-2.5">
-                <a href={`tel:${card.phone1}`} className="flex items-center justify-between group p-2.5 -m-2.5 rounded-2xl hover:bg-white/5 transition-all">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
-                      <Phone className="w-4 h-4 text-gray-400 group-hover:text-gray-300" />
-                    </div>
-                    <div>
-                      <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Телефон</p>
-                      <p className="font-bold text-base tracking-tight">{card.phone1}</p>
-                    </div>
+                <a href={`tel:${card.phone1}`} className="flex items-center gap-3 group p-2.5 -m-2.5 rounded-2xl hover:bg-white/5 transition-all">
+                  <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
+                    <Phone className="w-5 h-5 text-apple-red" />
                   </div>
-                  <div className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-apple-red/20 transition-all">
-                    <Phone className="w-3 h-3 text-gray-400 group-hover:text-apple-red" />
+                  <div>
+                    <p className="font-bold text-base tracking-tight">{card.phone1}</p>
                   </div>
                 </a>
 
                 {card.telegram && (
-                  <a href={`https://t.me/${card.telegram.replace('@', '')}`} target="_blank" className="flex items-center justify-between group p-2.5 -m-2.5 rounded-2xl hover:bg-white/5 transition-all">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
-                        <Send className="w-4 h-4 text-gray-400 group-hover:text-gray-300" />
-                      </div>
-                      <div>
-                        <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Telegram</p>
-                        <p className="font-bold text-base tracking-tight">{card.telegram}</p>
-                      </div>
+                  <a href={`https://t.me/${card.telegram.replace('@', '')}`} target="_blank" className="flex items-center gap-3 group p-2.5 -m-2.5 rounded-2xl hover:bg-white/5 transition-all">
+                    <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
+                      <Send className="w-5 h-5 text-apple-red" />
                     </div>
-                    <div className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-apple-red/20 transition-all">
-                      <Send className="w-3 h-3 text-gray-400 group-hover:text-apple-red" />
+                    <div>
+                      <p className="font-bold text-base tracking-tight">@{card.telegram.replace('@', '')}</p>
                     </div>
                   </a>
                 )}
 
                 {card.whatsapp && (
-                  <a href={`https://wa.me/${card.whatsapp.replace(/[^0-9]/g, '')}`} target="_blank" className="flex items-center justify-between group p-2.5 -m-2.5 rounded-2xl hover:bg-white/5 transition-all">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
-                        <MessageSquare className="w-4 h-4 text-gray-400 group-hover:text-gray-300" />
-                      </div>
-                      <div>
-                        <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">WhatsApp</p>
-                        <p className="font-bold text-base tracking-tight">{card.whatsapp}</p>
-                      </div>
+                  <a href={`https://wa.me/${card.whatsapp.replace(/[^0-9]/g, '')}`} target="_blank" className="flex items-center gap-3 group p-2.5 -m-2.5 rounded-2xl hover:bg-white/5 transition-all">
+                    <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 group-hover:border-white/20 transition-all">
+                      <MessageSquare className="w-5 h-5 text-apple-red" />
                     </div>
-                    <div className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-apple-red/20 transition-all">
-                      <MessageSquare className="w-3 h-3 text-gray-400 group-hover:text-apple-red" />
+                    <div>
+                      <p className="font-bold text-base tracking-tight">{card.whatsapp}</p>
                     </div>
                   </a>
                 )}
 
                 {card.max && (
                   <div className="flex items-center gap-3 p-2.5 -m-2.5 rounded-2xl">
-                    <div className="w-9 h-9 bg-white/5 rounded-xl flex items-center justify-center border border-white/10">
-                      <Zap className="w-4 h-4 text-gray-400" />
+                    <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10">
+                      <Zap className="w-5 h-5 text-apple-red" />
                     </div>
                     <div>
-                      <p className="text-[10px] uppercase font-bold tracking-widest text-gray-500">Max</p>
                       <p className="font-bold text-base tracking-tight">{card.max}</p>
                     </div>
                   </div>
@@ -395,22 +314,69 @@ export default function PublicCardView() {
             </a>
           )}
         </div>
+
+        {/* Share Section */}
+        <section className="glass-card p-5 space-y-4">
+          <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em] text-center">Поделиться ссылкой на приложение</p>
+          <div className="flex justify-center gap-3">
+            <button
+              onClick={() => {
+                const text = encodeURIComponent(`Визитка авто: ${card.carModel} (${card.plateNumber})`);
+                const url = encodeURIComponent(window.location.href);
+                window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
+              }}
+              className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all shadow-xl"
+              title="Telegram"
+            >
+              <Send className="w-5 h-5 text-apple-red" />
+            </button>
+            <button
+              onClick={() => {
+                const text = encodeURIComponent(`Визитка авто: ${card.carModel} (${card.plateNumber}) - `);
+                const url = encodeURIComponent(window.location.href);
+                window.open(`https://wa.me/?text=${text}${url}`, '_blank');
+              }}
+              className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all shadow-xl"
+              title="WhatsApp"
+            >
+              <MessageSquare className="w-5 h-5 text-apple-red" />
+            </button>
+            <button
+              onClick={() => {
+                const url = encodeURIComponent(window.location.href);
+                window.open(`https://vk.com/share.php?url=${url}`, '_blank');
+              }}
+              className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all shadow-xl"
+              title="VK"
+            >
+              <span className="font-bold text-apple-red text-base">VK</span>
+            </button>
+            <button
+              onClick={() => {
+                if (navigator.share) {
+                  navigator.share({
+                    title: `Визитка авто: ${card.carModel}`,
+                    text: `Свяжитесь с владельцем авто ${card.plateNumber}`,
+                    url: window.location.href,
+                  }).catch(console.error);
+                } else {
+                  navigator.clipboard.writeText(window.location.href);
+                  alert('Ссылка скопирована');
+                }
+              }}
+              className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all shadow-xl"
+              title="Другое"
+            >
+              <Plus className="w-5 h-5 text-apple-red" />
+            </button>
+          </div>
+        </section>
       </main>
 
       <footer className="mt-8 mb-6 text-center space-y-5 px-5">
         <div className="flex flex-col items-center gap-3">
           <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.3em]">Разработка и поддержка</p>
-          <div className="flex items-center gap-5">
-            <a 
-              href="https://t.me/krisdev13" 
-              target="_blank" 
-              className="group flex flex-col items-center gap-1"
-            >
-              <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-apple-red/20 group-hover:border-apple-red/30 transition-all">
-                <Send className="w-3.5 h-3.5 text-gray-400 group-hover:text-apple-red" />
-              </div>
-              <span className="text-[10px] font-bold text-gray-500 group-hover:text-gray-400 transition-colors">@krisdev13</span>
-            </a>
+          <div className="flex items-center justify-center">
             <a 
               href="mailto:info@premiumwebsite.ru" 
               className="group flex flex-col items-center gap-1"
@@ -457,14 +423,6 @@ export default function PublicCardView() {
                     size={280}
                     level="Q"
                     includeMargin={true}
-                    imageSettings={{
-                      src: "/logo.png",
-                      x: undefined,
-                      y: undefined,
-                      height: 48,
-                      width: 48,
-                      excavate: true,
-                    }}
                   />
                 </div>
               </div>

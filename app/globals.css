@@ -8,6 +8,7 @@
 }
 
 :root {
+  font-size: 17px;
   --bg-color: #000000;
   --text-color: #ffffff;
   --glass-bg: rgba(255, 255, 255, 0.05);

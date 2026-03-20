@@ -183,7 +183,7 @@ export default function CabinetPage() {
                           level="Q"
                           includeMargin={true}
                           imageSettings={{
-                            src: "/logo.png",
+                            src: "/logo.png?v=3",
                             x: undefined,
                             y: undefined,
                             height: 32,

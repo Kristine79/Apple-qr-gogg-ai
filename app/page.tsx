@@ -600,7 +600,6 @@ export default function Home() {
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
                       <div className="space-y-1.5">
-                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Ваше имя</label>
                         <motion.div
                           animate={errors.ownerName ? { x: [-4, 4, -4, 4, 0] } : {}}
                           transition={{ duration: 0.4 }}
@@ -611,13 +610,12 @@ export default function Home() {
                             ref={ownerNameRef}
                             value={formData.ownerName || ''}
                             onChange={handleInputChange}
-                            placeholder="Иван Иванов"
+                            placeholder="Ваше имя"
                             className={`w-full bg-white/5 border-2 ${errors.ownerName ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-3 py-2 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
                           />
                         </motion.div>
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Телефон</label>
                         <motion.div
                           animate={errors.phone1 ? { x: [-4, 4, -4, 4, 0] } : {}}
                           transition={{ duration: 0.4 }}
@@ -629,7 +627,7 @@ export default function Home() {
                             ref={phoneInputRef}
                             value={formData.phone1 || ''}
                             onChange={handleInputChange}
-                            placeholder="+7 (900) 000-00-00"
+                            placeholder="Телефон"
                             className={`w-full bg-white/5 border-2 ${errors.phone1 ? 'border-apple-red shadow-[0_0_20px_rgba(255,59,48,0.2)]' : 'border-white/5 hover:border-white/10'} rounded-xl px-3 py-2 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600`}
                           />
                         </motion.div>
@@ -668,24 +666,22 @@ export default function Home() {
                   >
                     <div className="grid grid-cols-1 gap-3 pt-1">
                       <div className="space-y-1.5">
-                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">Telegram</label>
                         <input
                           name="telegram"
                           value={formData.telegram || ''}
                           onChange={handleInputChange}
-                          placeholder="username"
+                          placeholder="Telegram (username)"
                           className="w-full bg-white/5 border-2 border-white/5 hover:border-white/10 rounded-xl px-3 py-2 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600"
                         />
                       </div>
 
                       <div className="space-y-1.5">
-                        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest ml-1">WhatsApp</label>
                         <input
                           type="tel"
                           name="whatsapp"
                           value={formData.whatsapp || ''}
                           onChange={handleInputChange}
-                          placeholder="+7..."
+                          placeholder="WhatsApp (+7...)"
                           className="w-full bg-white/5 border-2 border-white/5 hover:border-white/10 rounded-xl px-3 py-2 text-base focus:border-apple-red transition-all outline-none placeholder:text-gray-600"
                         />
                       </div>
@@ -881,31 +877,14 @@ export default function Home() {
 
         <footer className="mt-16 mb-8 text-center space-y-8 relative z-10">
           <div className="flex flex-col items-center gap-6">
-            <p className="text-xs font-black text-white/30 uppercase tracking-[0.3em]">Разработка и поддержка</p>
+            <p className="text-xs font-bold text-white/30 uppercase tracking-[0.3em]">Разработка и поддержка</p>
             <div className="flex flex-col items-center gap-4">
-              <div className="flex items-center gap-8">
-                <a 
-                  href="https://t.me/krisdev13" 
-                  target="_blank" 
-                  className="flex items-center gap-2 text-base font-bold text-white/60 hover:text-apple-red transition-colors"
-                >
-                  <Send className="w-5 h-5" />
-                  @krisdev13
-                </a>
-                <a 
-                  href="mailto:info@premiumwebsite.ru" 
-                  className="flex items-center gap-2 text-base font-bold text-white/60 hover:text-apple-red transition-colors"
-                >
-                  <Mail className="w-5 h-5" />
-                  Email
-                </a>
-              </div>
               <a 
-                href="https://t.me/avtovikupkaluga" 
-                target="_blank" 
-                className="glass-panel px-6 py-2 text-white/40 text-xs font-bold hover:text-apple-red transition-all border-white/5"
+                href="mailto:info@premiumwebsite.ru" 
+                className="flex items-center gap-2 text-xs font-bold text-white/60 hover:text-apple-red transition-colors"
               >
-                автовыкуп в Калуге + 200км
+                <Mail className="w-4 h-4" />
+                Email
               </a>
             </div>
           </div>
@@ -943,14 +922,6 @@ export default function Home() {
                     size={280}
                     level="Q"
                     includeMargin={true}
-                    imageSettings={{
-                      src: "/logo.png",
-                      x: undefined,
-                      y: undefined,
-                      height: 48,
-                      width: 48,
-                      excavate: true,
-                    }}
                   />
                 </div>
               </div>
@@ -974,58 +945,6 @@ export default function Home() {
                   </button>
                 </div>
 
-                <div className="space-y-3">
-                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] text-center">Поделиться ссылкой</p>
-                  <div className="flex justify-center gap-4">
-                    <button
-                      onClick={() => {
-                        const text = encodeURIComponent('Моя QR-визитка для авто');
-                        const url = encodeURIComponent(generatedUrl || '');
-                        window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
-                      }}
-                      className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center border border-blue-500/20 hover:bg-blue-500/20 transition-all"
-                      title="Telegram"
-                    >
-                      <Send className="w-5 h-5 text-blue-500" />
-                    </button>
-                    <button
-                      onClick={() => {
-                        const text = encodeURIComponent('Моя QR-визитка для авто: ');
-                        const url = encodeURIComponent(generatedUrl || '');
-                        window.open(`https://wa.me/?text=${text}${url}`, '_blank');
-                      }}
-                      className="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center border border-green-500/20 hover:bg-green-500/20 transition-all"
-                      title="WhatsApp"
-                    >
-                      <MessageSquare className="w-5 h-5 text-green-500" />
-                    </button>
-                    <button
-                      onClick={() => {
-                        const url = encodeURIComponent(generatedUrl || '');
-                        window.open(`https://vk.com/share.php?url=${url}`, '_blank');
-                      }}
-                      className="w-12 h-12 rounded-full bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 hover:bg-indigo-500/20 transition-all"
-                      title="VK"
-                    >
-                      <span className="font-bold text-indigo-400 text-sm">VK</span>
-                    </button>
-                    <button
-                      onClick={() => shareQRImage()}
-                      className="w-12 h-12 rounded-full bg-apple-red/10 flex items-center justify-center border border-apple-red/20 hover:bg-apple-red/20 transition-all"
-                      title="Поделиться картинкой"
-                    >
-                      <ImageIcon className="w-5 h-5 text-apple-red" />
-                    </button>
-                    <button
-                      onClick={() => shareApp()}
-                      className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all"
-                      title="Другое"
-                    >
-                      <Plus className="w-5 h-5 text-gray-400" />
-                    </button>
-                  </div>
-                </div>
-                
                 <button
                   onClick={() => copyToClipboard(generatedUrl || '')}
                   className="w-full py-4 px-8 rounded-2xl bg-white/5 text-white font-bold flex items-center justify-center gap-3 border border-white/10 hover:bg-white/10 transition-all"
@@ -1033,6 +952,58 @@ export default function Home() {
                   <Check className="w-5 h-5 text-white/30" />
                   Копировать ссылку
                 </button>
+
+                <div className="space-y-3 pt-2">
+                  <p className="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] text-center">Поделиться ссылкой на приложение</p>
+                  <div className="flex justify-center gap-3">
+                    <button
+                      onClick={() => {
+                        const text = encodeURIComponent('Моя QR-визитка для авто');
+                        const url = encodeURIComponent(generatedUrl || '');
+                        window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
+                      }}
+                      className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all"
+                      title="Telegram"
+                    >
+                      <Send className="w-5 h-5 text-apple-red" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        const text = encodeURIComponent('Моя QR-визитка для авто: ');
+                        const url = encodeURIComponent(generatedUrl || '');
+                        window.open(`https://wa.me/?text=${text}${url}`, '_blank');
+                      }}
+                      className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all"
+                      title="WhatsApp"
+                    >
+                      <MessageSquare className="w-5 h-5 text-apple-red" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        const url = encodeURIComponent(generatedUrl || '');
+                        window.open(`https://vk.com/share.php?url=${url}`, '_blank');
+                      }}
+                      className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all"
+                      title="VK"
+                    >
+                      <span className="font-bold text-apple-red text-sm">VK</span>
+                    </button>
+                    <button
+                      onClick={() => shareQRImage()}
+                      className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all"
+                      title="Поделиться картинкой"
+                    >
+                      <ImageIcon className="w-5 h-5 text-apple-red" />
+                    </button>
+                    <button
+                      onClick={() => shareApp()}
+                      className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all"
+                      title="Другое"
+                    >
+                      <Plus className="w-5 h-5 text-apple-red" />
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <div className="glass-panel p-6 w-full max-w-sm">
