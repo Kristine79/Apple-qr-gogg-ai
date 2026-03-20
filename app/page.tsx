@@ -253,7 +253,7 @@ export default function Home() {
   };
 
   const shareApp = async () => {
-    const appUrl = window.location.origin;
+    const appUrl = 'https://autoqrcard.vercel.app/';
     if (navigator.share) {
       try {
         await navigator.share({
@@ -960,8 +960,8 @@ export default function Home() {
                   <div className="flex justify-center gap-3">
                     <button
                       onClick={() => {
-                        const text = encodeURIComponent('Моя QR-визитка для авто');
-                        const url = encodeURIComponent(generatedUrl || '');
+                        const text = encodeURIComponent('CarQR — Ваш QR-код для связи');
+                        const url = encodeURIComponent('https://autoqrcard.vercel.app/');
                         window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
                       }}
                       className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all"
@@ -971,8 +971,8 @@ export default function Home() {
                     </button>
                     <button
                       onClick={() => {
-                        const text = encodeURIComponent('Моя QR-визитка для авто: ');
-                        const url = encodeURIComponent(generatedUrl || '');
+                        const text = encodeURIComponent('CarQR — Ваш QR-код для связи: ');
+                        const url = encodeURIComponent('https://autoqrcard.vercel.app/');
                         window.open(`https://wa.me/?text=${text}${url}`, '_blank');
                       }}
                       className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all"
@@ -982,7 +982,7 @@ export default function Home() {
                     </button>
                     <button
                       onClick={() => {
-                        const url = encodeURIComponent(generatedUrl || '');
+                        const url = encodeURIComponent('https://autoqrcard.vercel.app/');
                         window.open(`https://vk.com/share.php?url=${url}`, '_blank');
                       }}
                       className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all"
