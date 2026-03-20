@@ -163,7 +163,7 @@ export default function PublicCardView() {
                   src="/logo.png" 
                   alt="Logo" 
                   fill 
-                  sizes="36px"
+                  sizes="46px"
                   className="object-cover"
                   referrerPolicy="no-referrer"
                 />
