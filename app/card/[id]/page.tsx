@@ -322,8 +322,8 @@ export default function PublicCardView() {
           <div className="flex justify-center gap-3">
             <button
               onClick={() => {
-                const text = encodeURIComponent(`Визитка авто: ${card.carModel} (${card.plateNumber})`);
-                const url = encodeURIComponent(window.location.href);
+                const text = encodeURIComponent('CarQR — Ваш QR-код для связи');
+                const url = encodeURIComponent('https://autoqrcard.vercel.app/');
                 window.open(`https://t.me/share/url?url=${url}&text=${text}`, '_blank');
               }}
               className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all shadow-xl"
@@ -333,8 +333,8 @@ export default function PublicCardView() {
             </button>
             <button
               onClick={() => {
-                const text = encodeURIComponent(`Визитка авто: ${card.carModel} (${card.plateNumber}) - `);
-                const url = encodeURIComponent(window.location.href);
+                const text = encodeURIComponent('CarQR — Ваш QR-код для связи: ');
+                const url = encodeURIComponent('https://autoqrcard.vercel.app/');
                 window.open(`https://wa.me/?text=${text}${url}`, '_blank');
               }}
               className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all shadow-xl"
@@ -344,7 +344,7 @@ export default function PublicCardView() {
             </button>
             <button
               onClick={() => {
-                const url = encodeURIComponent(window.location.href);
+                const url = encodeURIComponent('https://autoqrcard.vercel.app/');
                 window.open(`https://vk.com/share.php?url=${url}`, '_blank');
               }}
               className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all shadow-xl"
@@ -356,12 +356,12 @@ export default function PublicCardView() {
               onClick={() => {
                 if (navigator.share) {
                   navigator.share({
-                    title: `Визитка авто: ${card.carModel}`,
-                    text: `Свяжитесь с владельцем авто ${card.plateNumber}`,
-                    url: window.location.href,
+                    title: 'CarQR — Ваш QR-код для связи',
+                    text: 'Создайте свой QR-код для автомобиля, чтобы другие могли связаться с вами, если машина мешает.',
+                    url: 'https://autoqrcard.vercel.app/',
                   }).catch(console.error);
                 } else {
-                  navigator.clipboard.writeText(window.location.href);
+                  navigator.clipboard.writeText('https://autoqrcard.vercel.app/');
                   alert('Ссылка скопирована');
                 }
               }}
