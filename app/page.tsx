@@ -371,6 +371,7 @@ export default function Home() {
               src="/logo.png" 
               alt="CarQR Logo" 
               fill 
+              sizes="36px"
               className="object-cover"
               referrerPolicy="no-referrer"
             />
@@ -454,6 +455,7 @@ export default function Home() {
                 src="/logo.png" 
                 alt="Logo" 
                 fill 
+                sizes="48px"
                 className="object-cover"
                 referrerPolicy="no-referrer"
               />
